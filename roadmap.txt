@@ -1,0 +1,57 @@
+# Words Crush Game - Plano de Otimização e Expansão
+
+## 1. Problemas Críticos (Prioritários)
+
+### Arquitetura:
+- [ ] Separar lógica de rede (cliente/servidor)
+- [ ] Remover duplicação de main()
+- [ ] Implementar injeção de dependência corretamente
+
+### Segurança:
+- [ ] Validar inputs (porta/IP)
+- [ ] Tratamento robusto de erros
+- [ ] Timeout de conexão
+
+### Performance:
+- [ ] Otimizar thread de recebimento
+- [ ] Bufferizar operações de I/O
+- [ ] Limitar uso de SwingUtilities.invokeLater
+
+## 2. Roadmap de Melhorias
+
+### Fase 1 - Refatoração (3-5 dias):
+1. Criar pacote `network` para código de rede
+2. Implementar padrão MVC para UI
+3. Adicionar logging profissional (SLF4J + Logback)
+4. Atualizar dependências no pom.xml
+
+### Fase 2 - Gameplay (1-2 semanas):
+1. Sistema de turnos estruturado
+2. Mecânica de palavras válidas
+3. Temporizador de jogadas
+4. Dicionário configurável
+
+### Fase 3 - Features Avançadas:
+1. Sistema de ranking ELO
+2. Modo single-player vs AI
+3. Salas privadas
+4. Histórico de partidas
+5. Sistema de achievements
+
+## 3. Sugestões de Código
+
+### Cliente (Client.java):
+- Validação de endereço/IP
+- Melhor tratamento de desconexão
+- Refatorar UI para MVC
+
+### Servidor (Program.java):
+- Limite máximo de jogadores
+- Pool de threads gerenciado
+- Logging detalhado
+
+## Próximos Passos:
+1. Implementar melhorias no cliente
+2. Refatorar servidor
+3. Criar testes unitários
+4. Configurar CI/CD
