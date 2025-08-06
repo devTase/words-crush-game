@@ -4,27 +4,34 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.academiadecodigo.wordsgame.database.Database;
 import org.academiadecodigo.wordsgame.database.DatabaseEnvData;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@ExtendWith(MockitoExtension.class)
 public class DatabaseTest {
 
+    @Mock
+    private Database mockDatabase;
+    
+    @Mock
+    private DatabaseEnvData mockDatabaseEnvData;
+    
     private Database database;
 
     @BeforeEach
     public void setUp() throws SQLException {
-        database = Database.getInstance();
+        // For testing, create a new Database instance instead of using singleton
+        // This allows proper test isolation
+        database = new Database();
         String ENV_TEST = "test";
         database.setEnv(ENV_TEST);
         database.startDb();
-    }
-
-    @AfterAll
-    public void tearDown() {
-        database.closeInstance();
     }
 
     @Test

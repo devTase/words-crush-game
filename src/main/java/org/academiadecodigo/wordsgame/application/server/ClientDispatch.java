@@ -3,6 +3,7 @@ package org.academiadecodigo.wordsgame.application.server;
 import org.academiadecodigo.wordsgame.prompt.Prompt;
 import org.academiadecodigo.wordsgame.entities.users.*;
 import org.academiadecodigo.wordsgame.service.UserAuthenticator;
+import org.academiadecodigo.wordsgame.config.GameConfiguration;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
 import org.academiadecodigo.wordsgame.game.PromptMenu;
 import org.academiadecodigo.wordsgame.game.grid.game.Grid;
@@ -28,14 +29,16 @@ public class ClientDispatch implements Runnable {
     private Boolean isPlayerNotReading = false;
     private LinkedList<String> bufferedMessages;
     private final UserAuthenticator userAuthenticator;
+    private final GameConfiguration gameConfiguration;
 
     private ChatCommandsMessagesTrafficManager chat;
     private Socket socket;
     private PrintWriter outStream;
 
-    public ClientDispatch(Socket socket, String filePath, UserAuthenticator userAuthenticator) {
+    public ClientDispatch(Socket socket, String filePath, UserAuthenticator userAuthenticator, GameConfiguration gameConfiguration) {
         this.socket = socket;
         this.userAuthenticator = userAuthenticator;
+        this.gameConfiguration = gameConfiguration;
         this.promptMenu = new PromptMenu<>();
         
         try {
@@ -84,8 +87,7 @@ public class ClientDispatch implements Runnable {
         registerInWaitingRoom(user);
         registerInChatManagerClass(user);
 
-        // TODO: Fix this hardcoded max clients
-        if(actualStage.getUsersInTheRoom().size() == 2) createAndStartNewThread(actualStage);
+        if(actualStage.getUsersInTheRoom().size() == gameConfiguration.getMaxClients()) createAndStartNewThread(actualStage);
 
         createAndStartNewThread(user);
         welcomeMessageNotifications(user);
@@ -144,7 +146,7 @@ public class ClientDispatch implements Runnable {
      * Starts the thread after users are created
      */
     private Stage createInstanceOfStage(String filePath) {
-        return WaitingRoom.getInstance(new Grid(filePath), 2, new CopyOnWriteArrayList<>());
+        return WaitingRoom.getInstance(new Grid(filePath), gameConfiguration.getMaxClients(), new CopyOnWriteArrayList<>());
     }
 
     /**

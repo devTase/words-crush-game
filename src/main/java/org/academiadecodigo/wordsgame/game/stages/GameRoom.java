@@ -2,6 +2,7 @@ package org.academiadecodigo.wordsgame.game.stages;
 
 import org.academiadecodigo.wordsgame.application.server.GameServer;
 import org.academiadecodigo.wordsgame.entities.users.User;
+import org.academiadecodigo.wordsgame.config.GameConfiguration;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
 import org.academiadecodigo.wordsgame.game.grid.game.Grid;
 import org.academiadecodigo.wordsgame.game.grid.server.ServerGrid;
@@ -52,8 +53,7 @@ public class GameRoom extends Stage {
 
     public synchronized void playerLost(User user){
         ((FinishRoom) finishStage).addUserToStage(user);
-        // TODO: Fix hardcoded max clients
-        if(finishStage.getUsersInTheRoom().size() == 2-1) checkForTheWinner();
+        if(finishStage.getUsersInTheRoom().size() == getMaxPlayers()-1) checkForTheWinner();
     }
 
     private void checkForTheWinner() {

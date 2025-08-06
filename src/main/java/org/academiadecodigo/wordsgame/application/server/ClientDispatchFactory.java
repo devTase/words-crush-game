@@ -23,6 +23,6 @@ public class ClientDispatchFactory {
     }
 
     public ClientDispatch create(Socket socket) {
-        return new ClientDispatch(socket, config.getWordsFilePath(), userAuthenticator);
+        return new ClientDispatch(socket, config.getWordsFilePath(), userAuthenticator, config);
     }
 }
