@@ -2,7 +2,7 @@ package org.academiadecodigo.wordsgame.application.server;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.academiadecodigo.bootcamp.Prompt;
+import org.academiadecodigo.wordsgame.prompt.Prompt;
 import org.academiadecodigo.wordsgame.entities.users.*;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
 import org.academiadecodigo.wordsgame.game.PromptMenu;

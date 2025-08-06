@@ -1,6 +1,6 @@
 package org.academiadecodigo.wordsgame.entities.users;
 
-import org.academiadecodigo.bootcamp.Prompt;
+import org.academiadecodigo.wordsgame.prompt.Prompt;
 import org.academiadecodigo.wordsgame.game.PromptMenu;
 import org.academiadecodigo.wordsgame.misc.Messages;
 import org.academiadecodigo.wordsgame.service.UserAuthenticator;
