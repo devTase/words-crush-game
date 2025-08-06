@@ -20,34 +20,14 @@ import org.academiadecodigo.wordsgame.entities.database.*;
 @Setter
 public class Database {
 
-    private static volatile Database instance;
     private Properties props;
     private Connection connection;
     private String env;
     private DatabaseEnvData dataBaseData;
 
-    private Database() {
+    public Database() {
         this.props = new Properties();
         env = ResourceBundle.getBundle("application").getString("env");
-    }
-
-    /**
-     * Returns the single instance of the Database class, creating it if necessary.
-     * This method uses double-checked locking to ensure that only one instance of
-     * the class is created in a multiThreaded environment.
-     *
-     * @return the single instance of the Database class
-     * @throws SQLException if an error occurs while creating the database connection
-     */
-    public static Database getInstance() throws SQLException {
-        if (instance == null) {
-            synchronized (Database.class) {
-                if (instance == null) {
-                    instance = new Database();
-                }
-            }
-        }
-        return instance;
     }
 
     /**
@@ -212,11 +192,10 @@ public class Database {
     }
 
     /**
-     * Deletes current instance of DataBase
+     * Closes the database connection.
      */
-    public void closeInstance() {
+    public void closeConnection() {
         close();
-        instance = null;
     }
 
 

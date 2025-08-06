@@ -30,13 +30,15 @@ public class ClientDispatch implements Runnable {
     private UserManager um;
     private Boolean isPlayerNotReading = false;
     private LinkedList<String> bufferedMessages;
+    private final UserAuthenticator userAuthenticator;
 
     private ChatCommandsMessagesTrafficManager chat;
     private Socket socket;
     private PrintWriter outStream;
 
-    public ClientDispatch(Socket socket, String filePath) {
+    public ClientDispatch(Socket socket, String filePath, UserAuthenticator userAuthenticator) {
         this.socket = socket;
+        this.userAuthenticator = userAuthenticator;
         this.promptMenu = new PromptMenu<>();
         
         try {
@@ -62,7 +64,7 @@ public class ClientDispatch implements Runnable {
      */
     private void setupUser()  {
 
-        this.um = new UserManager(this.outStream, this.prompt);
+        this.um = new UserManager(this.outStream, this.prompt, this.userAuthenticator);
 
         int connectionType = promptMenu.createNewMenu(new String[]{"Register", "Login"}, "Select", prompt);
         if(connectionType == 1) {

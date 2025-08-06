@@ -54,11 +54,11 @@
     </repositories>
 
     <dependencies>
-        <dependency>
+        <!-- <dependency>
             <groupId>org.academiadecodigo</groupId>
             <artifactId>PromptView</artifactId>
             <version>1.0</version>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>

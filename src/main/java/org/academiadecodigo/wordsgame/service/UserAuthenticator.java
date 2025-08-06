@@ -1,28 +1,26 @@
 package org.academiadecodigo.wordsgame.service;
 import org.academiadecodigo.wordsgame.database.Database;
 import org.academiadecodigo.wordsgame.entities.users.Role;
+
+import javax.inject.Inject;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class UserAuthenticator {
 
-    static Database db;
+    private final Database database;
 
-    static {
-        try {
-            db = Database.getInstance();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    @Inject
+    public UserAuthenticator(Database database) {
+        this.database = database;
     }
 
-    public static boolean authenticateRoot(String user, String pass) {
+    public boolean authenticateRoot(String user, String pass) {
         String query = "SELECT * FROM users WHERE username = ? AND password = ?";
         PreparedStatement pstmt;
         try {
-            db = Database.getInstance();
-            pstmt = db.getConnection().prepareStatement(query);
+            pstmt = database.getConnection().prepareStatement(query);
 
             pstmt.setString(1, user);
             pstmt.setString(2, pass);
@@ -38,16 +36,24 @@ public class UserAuthenticator {
         return false;
     }
 
-    public static void register(Role role, String userName, String password) {
-        String query = "INSERT INTO users (username, password, role) VALUES ('"+ userName + "', '"+ password + "', '"+ role +"')";
-        db.executeUpdate(query);
+    public void register(Role role, String userName, String password) {
+        String query = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
+        try {
+            PreparedStatement statement = database.getConnection().prepareStatement(query);
+            statement.setString(1, userName);
+            statement.setString(2, password);
+            statement.setString(3, role.toString());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
-    public static boolean login(String userName, String password) {
+    public boolean login(String userName, String password) {
         String query = "SELECT * FROM users WHERE username = ? AND password = ?";
         PreparedStatement statement;
         try {
-            statement = db.getConnection().prepareStatement(query);
+            statement = database.getConnection().prepareStatement(query);
 
             statement.setString(1, userName);
             statement.setString(2, password);
@@ -60,11 +66,11 @@ public class UserAuthenticator {
         }
     }
 
-    public static Role getUserRole(String userName) {
+    public Role getUserRole(String userName) {
         String query = "SELECT role FROM users WHERE username = ?";
         PreparedStatement statement;
         try {
-            statement = db.getConnection().prepareStatement(query);
+            statement = database.getConnection().prepareStatement(query);
 
             statement.setString(1, userName);
             ResultSet resultSet = statement.executeQuery();

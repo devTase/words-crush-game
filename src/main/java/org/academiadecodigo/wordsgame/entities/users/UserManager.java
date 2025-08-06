@@ -9,17 +9,19 @@ import java.io.PrintWriter;
 
 public class UserManager {
 
-    PrintWriter outStream;
-    PromptMenu<String> promptMenuString;
-    PromptMenu<Integer> promptMenuInt;
-    Prompt prompt;
+    private final PrintWriter outStream;
+    private final PromptMenu<String> promptMenuString;
+    private final PromptMenu<Integer> promptMenuInt;
+    private final Prompt prompt;
+    private final UserAuthenticator userAuthenticator;
     private String userName;
 
-    public UserManager(PrintWriter outStream, Prompt prompt) {
+    public UserManager(PrintWriter outStream, Prompt prompt, UserAuthenticator userAuthenticator) {
         this.outStream = outStream;
         this.promptMenuInt = new PromptMenu<>();
         this.promptMenuString = new PromptMenu<>();
         this.prompt = prompt;
+        this.userAuthenticator = userAuthenticator;
     }
 
     public void register() {
@@ -38,7 +40,7 @@ public class UserManager {
         String userName = promptMenuString.createNewQuestion(Messages.getMessage("INFO_SET_NICKNAME"), prompt);
         String password = promptMenuString.createNewQuestion(Messages.getMessage("INFO_SET_PASSWORD"), prompt);
 
-        if(UserAuthenticator.login(userName, password)) {
+        if(userAuthenticator.login(userName, password)) {
             outStream.println(Messages.getMessage("WELCOME"));
             this.userName = userName;
             //TODO: Show a dashboard with all the user data here
@@ -50,7 +52,7 @@ public class UserManager {
     }
 
     public Role getUserRole() {
-        return UserAuthenticator.getUserRole(userName);
+        return userAuthenticator.getUserRole(userName);
     }
 
     public String getUserName() {
@@ -65,7 +67,7 @@ public class UserManager {
             userName = promptMenuString.createNewQuestion("Set Admin Name: ", prompt);
             password = promptMenuString.createNewQuestion(Messages.getMessage("INFO_SET_PASSWORD"), prompt);
 
-            UserAuthenticator.register(Role.ADMIN, userName, password);
+            userAuthenticator.register(Role.ADMIN, userName, password);
             outStream.println("A new Admin Account was configured");
             return;
         }
@@ -77,10 +79,10 @@ public class UserManager {
     private void playerRegistration() {
         String userName = promptMenuString.createNewQuestion(Messages.getMessage("INFO_SET_NICKNAME"), prompt);
         String password = promptMenuString.createNewQuestion(Messages.getMessage("INFO_SET_PASSWORD"), prompt);
-        UserAuthenticator.register(Role.PLAYER, userName, password);
+        userAuthenticator.register(Role.PLAYER, userName, password);
     }
 
     private boolean isRoot(String user, String pass) {
-        return UserAuthenticator.authenticateRoot(user, pass);
+        return userAuthenticator.authenticateRoot(user, pass);
     }
 }
