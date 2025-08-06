@@ -1,9 +1,8 @@
 package org.academiadecodigo.wordsgame.application.server;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.academiadecodigo.wordsgame.prompt.Prompt;
 import org.academiadecodigo.wordsgame.entities.users.*;
+import org.academiadecodigo.wordsgame.service.UserAuthenticator;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
 import org.academiadecodigo.wordsgame.game.PromptMenu;
 import org.academiadecodigo.wordsgame.game.grid.game.Grid;
@@ -18,8 +17,6 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@Getter
-@Setter
 public class ClientDispatch implements Runnable {
 
     private int id;
@@ -87,7 +84,8 @@ public class ClientDispatch implements Runnable {
         registerInWaitingRoom(user);
         registerInChatManagerClass(user);
 
-        if(actualStage.getUsersInTheRoom().size() == GameServer.MAX_CLIENTS) createAndStartNewThread(actualStage);
+        // TODO: Fix this hardcoded max clients
+        if(actualStage.getUsersInTheRoom().size() == 2) createAndStartNewThread(actualStage);
 
         createAndStartNewThread(user);
         welcomeMessageNotifications(user);
@@ -146,7 +144,7 @@ public class ClientDispatch implements Runnable {
      * Starts the thread after users are created
      */
     private Stage createInstanceOfStage(String filePath) {
-        return WaitingRoom.getInstance(new Grid(filePath), GameServer.MAX_CLIENTS, new CopyOnWriteArrayList<>());
+        return WaitingRoom.getInstance(new Grid(filePath), 2, new CopyOnWriteArrayList<>());
     }
 
     /**
@@ -204,5 +202,26 @@ public class ClientDispatch implements Runnable {
     public void setIsPlayerNotReading(Boolean state) {
         this.isPlayerNotReading = state;
         if(!state) this.sendBufferedMessagesToPlayer();
+    }
+
+    // Getters and Setters
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public PrintWriter getOutStream() {
+        return outStream;
+    }
+
+    public Boolean getIsPlayerNotReading() {
+        return isPlayerNotReading;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

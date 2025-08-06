@@ -1,14 +1,10 @@
 package org.academiadecodigo.wordsgame.game.stages;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.academiadecodigo.wordsgame.entities.users.User;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
 import org.academiadecodigo.wordsgame.game.grid.game.Grid;
 import java.util.List;
 
-@Getter
-@Setter
 public class WaitingRoom extends Stage {
 
     private static WaitingRoom waitingRoom;

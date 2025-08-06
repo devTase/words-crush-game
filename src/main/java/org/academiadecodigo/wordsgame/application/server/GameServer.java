@@ -1,7 +1,5 @@
 package org.academiadecodigo.wordsgame.application.server;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.academiadecodigo.wordsgame.config.ClientExecutorService;
 import org.academiadecodigo.wordsgame.config.GameConfiguration;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
@@ -14,8 +12,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.*;
 
-@Getter
-@Setter
 public class GameServer {
 
     private final GameConfiguration config;

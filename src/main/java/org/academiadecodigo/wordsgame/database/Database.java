@@ -1,7 +1,5 @@
 package org.academiadecodigo.wordsgame.database;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -16,8 +14,6 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import org.academiadecodigo.wordsgame.entities.database.*;
 
-@Getter
-@Setter
 public class Database {
 
     private Properties props;
@@ -198,5 +194,36 @@ public class Database {
         close();
     }
 
+    // Getters and Setters
+    public Properties getProps() {
+        return props;
+    }
 
+    public void setProps(Properties props) {
+        this.props = props;
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
+    public String getEnv() {
+        return env;
+    }
+
+    public void setEnv(String env) {
+        this.env = env;
+    }
+
+    public DatabaseEnvData getDataBaseData() {
+        return dataBaseData;
+    }
+
+    public void setDataBaseData(DatabaseEnvData dataBaseData) {
+        this.dataBaseData = dataBaseData;
+    }
 }

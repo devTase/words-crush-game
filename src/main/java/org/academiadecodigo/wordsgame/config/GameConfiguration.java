@@ -1,12 +1,9 @@
 package org.academiadecodigo.wordsgame.config;
 
-import lombok.Getter;
-
 import javax.inject.Singleton;
 import java.util.ResourceBundle;
 
 @Singleton
-@Getter
 public class GameConfiguration {
 
     private final int serverPort;
@@ -34,5 +31,22 @@ public class GameConfiguration {
 
     public boolean isTest() {
         return "test".equals(environment);
+    }
+
+    // Getters
+    public int getServerPort() {
+        return serverPort;
+    }
+
+    public int getMaxClients() {
+        return maxClients;
+    }
+
+    public String getWordsFilePath() {
+        return wordsFilePath;
+    }
+
+    public String getEnvironment() {
+        return environment;
     }
 }

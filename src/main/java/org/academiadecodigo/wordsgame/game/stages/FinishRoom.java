@@ -1,6 +1,5 @@
 package org.academiadecodigo.wordsgame.game.stages;
 
-import lombok.Getter;
 import org.academiadecodigo.wordsgame.entities.users.User;
 import org.academiadecodigo.wordsgame.game.grid.game.Grid;
 
@@ -8,7 +7,6 @@ import java.util.List;
 
 public class FinishRoom extends Stage {
 
-    @Getter
     private User winner;
 
     public FinishRoom(Grid grid, int maxPlayers, List<User> usersInTheRoom) {
@@ -39,4 +37,7 @@ public class FinishRoom extends Stage {
         getUsersInTheRoom().add(user);
     }
 
+    public User getWinner() {
+        return winner;
+    }
 }
