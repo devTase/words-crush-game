@@ -1,6 +1,6 @@
 package org.academiadecodigo.wordsgame.config;
 
-import javax.inject.Singleton;
+import jakarta.inject.Singleton;
 import java.util.ResourceBundle;
 
 @Singleton

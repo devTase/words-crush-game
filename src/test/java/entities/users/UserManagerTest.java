@@ -8,14 +8,19 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoSettings;
+import org.mockito.quality.Strictness;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension.class)
+@MockitoSettings(strictness = Strictness.LENIENT)
 public class UserManagerTest {
 
     @Mock
@@ -36,44 +41,41 @@ public class UserManagerTest {
     }
 
     @Test
-    void getUserRoleTest() {
+    @DisplayName("Should delegate getUserRole to UserAuthenticator with current userName")
+    void getUserRole_should_delegate_to_userAuthenticator_with_current_userName() {
         // given
-        String userName = "testUser";
-        when(mockUserAuthenticator.getUserRole(userName)).thenReturn(Role.PLAYER);
+        when(mockUserAuthenticator.getUserRole(null)).thenReturn(null);
         
         // when
-        Role result = mockUserAuthenticator.getUserRole(userName);
+        Role result = userManager.getUserRole();
         
         // then
-        assertEquals(Role.PLAYER, result);
+        assertNull(result);
+        verify(mockUserAuthenticator).getUserRole(null);
     }
 
     @Test
-    void loginSuccessTest() {
-        // given
-        when(mockUserAuthenticator.login(anyString(), anyString())).thenReturn(true);
-        
-        // Mock prompt menu responses - note: we need to work with the actual PromptMenu implementation
-        // This test verifies the basic structure works
+    @DisplayName("Should return null when no user is logged in")
+    void getUserName_should_return_null_when_no_user_logged_in() {
+        // given - no setup needed, userManager starts with null userName
         
         // when
-        boolean loginResult = mockUserAuthenticator.login("testUser", "password");
+        String result = userManager.getUserName();
         
         // then
-        assertEquals(true, loginResult);
-        verify(mockUserAuthenticator).login("testUser", "password");
+        assertNull(result);
     }
 
     @Test
-    void authenticateRootTest() {
+    @DisplayName("Should use injected dependencies correctly")
+    void userManager_should_use_injected_dependencies_correctly() {
         // given
-        when(mockUserAuthenticator.authenticateRoot(anyString(), anyString())).thenReturn(true);
+        assertNotNull(userManager);
         
-        // when
-        boolean result = mockUserAuthenticator.authenticateRoot("root", "password");
+        // when - verify that the userManager is created with dependencies
+        userManager.getUserRole();
         
         // then
-        assertEquals(true, result);
-        verify(mockUserAuthenticator).authenticateRoot("root", "password");
+        verify(mockUserAuthenticator).getUserRole(null);
     }
 }

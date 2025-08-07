@@ -4,7 +4,7 @@ import com.google.inject.Injector;
 import org.academiadecodigo.wordsgame.config.GameConfiguration;
 import org.academiadecodigo.wordsgame.service.UserAuthenticator;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.net.Socket;
 
 public class ClientDispatchFactory {

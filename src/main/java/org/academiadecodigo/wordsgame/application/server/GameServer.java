@@ -6,7 +6,7 @@ import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
 import org.academiadecodigo.wordsgame.database.Database;
 import org.academiadecodigo.wordsgame.misc.Messages;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
