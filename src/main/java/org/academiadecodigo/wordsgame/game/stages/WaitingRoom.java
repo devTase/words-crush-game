@@ -1,17 +1,14 @@
 package org.academiadecodigo.wordsgame.game.stages;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.academiadecodigo.wordsgame.entities.users.User;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
 import org.academiadecodigo.wordsgame.game.grid.game.Grid;
 import java.util.List;
 
-@Getter
-@Setter
 public class WaitingRoom extends Stage {
 
     private static WaitingRoom waitingRoom;
+    private static boolean isRunning = false;
 
     public WaitingRoom(Grid grid, int maxPlayers, List<User> usersInTheRoom) {
         super(grid, maxPlayers, usersInTheRoom);
@@ -60,13 +57,39 @@ public class WaitingRoom extends Stage {
         this.getUsersInTheRoom().add(user);
     }
 
+    /**
+     * Check if the waiting room thread is already running
+     * @return boolean
+     */
+    public static boolean isRunning() {
+        return isRunning;
+    }
+
+    /**
+     * Force start the waiting room thread
+     */
+    public static void forceStart() {
+        if (waitingRoom != null && !isRunning) {
+            synchronized (WaitingRoom.class) {
+                if (!isRunning) {
+                    isRunning = true;
+                    Thread waitingRoomThread = new Thread(waitingRoom);
+                    waitingRoomThread.start();
+                }
+            }
+        }
+    }
+
     @Override
     public void run() {
-
+        isRunning = true;
+        
         while(!arePlayersReady()) {}
 
         Stage nextStage = ChangeStage.changeToGameRoomStage(this);
         Thread t = new Thread(nextStage);
         t.start();
+        
+        isRunning = false;
     }
 }

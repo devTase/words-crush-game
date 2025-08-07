@@ -1,15 +1,14 @@
 package org.academiadecodigo.wordsgame.game.stages;
 
-import lombok.Getter;
 import org.academiadecodigo.wordsgame.application.server.GameServer;
 import org.academiadecodigo.wordsgame.entities.users.User;
+import org.academiadecodigo.wordsgame.config.GameConfiguration;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
 import org.academiadecodigo.wordsgame.game.grid.game.Grid;
 import org.academiadecodigo.wordsgame.game.grid.server.ServerGrid;
 import org.academiadecodigo.wordsgame.misc.Messages;
 import java.util.List;
 
-@Getter
 public class GameRoom extends Stage {
 
     private ServerGrid sg;
@@ -54,7 +53,7 @@ public class GameRoom extends Stage {
 
     public synchronized void playerLost(User user){
         ((FinishRoom) finishStage).addUserToStage(user);
-        if(finishStage.getUsersInTheRoom().size() == GameServer.MAX_CLIENTS-1) checkForTheWinner();
+        if(finishStage.getUsersInTheRoom().size() == getMaxPlayers()-1) checkForTheWinner();
     }
 
     private void checkForTheWinner() {
@@ -72,5 +71,28 @@ public class GameRoom extends Stage {
         return null;
     }
 
+    // Getters and Setters
+    public ServerGrid getSg() {
+        return sg;
+    }
 
+    public void setSg(ServerGrid sg) {
+        this.sg = sg;
+    }
+
+    public Stage getFinishStage() {
+        return finishStage;
+    }
+
+    public void setFinishStage(Stage finishStage) {
+        this.finishStage = finishStage;
+    }
+
+    public boolean isGameIsFinished() {
+        return gameIsFinished;
+    }
+
+    public void setGameIsFinished(boolean gameIsFinished) {
+        this.gameIsFinished = gameIsFinished;
+    }
 }

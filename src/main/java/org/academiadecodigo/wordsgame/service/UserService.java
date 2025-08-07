@@ -3,19 +3,17 @@ package org.academiadecodigo.wordsgame.service;
 import org.academiadecodigo.wordsgame.database.Database;
 import org.academiadecodigo.wordsgame.entities.users.User;
 
+import jakarta.inject.Inject;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 
 public class UserService {
-    private Database database;
+    private final Database database;
 
-    public UserService() {
-        try {
-            this.database = Database.getInstance();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    @Inject
+    public UserService(Database database) {
+        this.database = database;
     }
 
     public Map<String, String> getUserById(int id) throws SQLException {

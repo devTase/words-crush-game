@@ -1,26 +1,18 @@
 package org.academiadecodigo.wordsgame.game;
 
-import org.academiadecodigo.bootcamp.Prompt;
-import org.academiadecodigo.bootcamp.scanners.menu.MenuInputScanner;
-import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
+import org.academiadecodigo.wordsgame.prompt.Prompt;
+import org.academiadecodigo.wordsgame.prompt.scanners.MenuInputScanner;
+import org.academiadecodigo.wordsgame.prompt.scanners.StringInputScanner;
 
-public class PromptMenu <T> {
+public class PromptMenu<T> {
 
-    public T createNewMenu(String[] strArray, String setMenuMessage, Prompt prompt) {
-
-        MenuInputScanner scanner = new MenuInputScanner(strArray);
-
-        scanner.setMessage(setMenuMessage);
-
-        return (T) prompt.getUserInput(scanner);
+    public Integer createNewMenu(String[] options, String title, Prompt prompt) {
+        MenuInputScanner menuInputScanner = new MenuInputScanner(options, title);
+        return menuInputScanner.promptMenu(prompt);
     }
 
-    public T createNewQuestion(String questTitle, Prompt prompt) {
-
-        StringInputScanner question = new StringInputScanner();
-
-        question.setMessage(questTitle);
-
-        return (T) prompt.getUserInput(question);
+    public String createNewQuestion(String question, Prompt prompt) {
+        StringInputScanner stringInputScanner = new StringInputScanner(question);
+        return stringInputScanner.promptString(prompt);
     }
 }

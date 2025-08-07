@@ -1,14 +1,13 @@
 package org.academiadecodigo.wordsgame.entities.users;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.academiadecodigo.wordsgame.game.stages.*;
 import org.academiadecodigo.wordsgame.application.server.ClientDispatch;
+import org.academiadecodigo.wordsgame.game.stages.Stage;
+import org.academiadecodigo.wordsgame.game.stages.WaitingRoom;
+import org.academiadecodigo.wordsgame.game.stages.GameRoom;
+import org.academiadecodigo.wordsgame.game.stages.FinishRoom;
+
 import java.io.IOException;
 import java.net.Socket;
-
-@Getter
-@Setter
 public class Player extends User {
 
     private boolean isKicked;
@@ -80,5 +79,14 @@ public class Player extends User {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    // Getter and Setter
+    public boolean isKicked() {
+        return isKicked;
+    }
+
+    public void setKicked(boolean kicked) {
+        this.isKicked = kicked;
     }
 }
