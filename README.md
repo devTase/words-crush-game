@@ -13,3 +13,10 @@ Crush all the words by typing the ones available in the board. The player that g
 
 To start the game with your client, use something like: "ncat localhost 8001" in your terminal
 To start the server side, open project and Run Program. Change starting variables if you want.
+
+## Branch Strategy
+
+- **main**: Production-ready releases only
+- **develop**: Integration branch for ongoing development
+- **feature/***: Feature development branches (merge to develop)
+- **hotfix/***: Critical fixes (merge to both main and develop)
