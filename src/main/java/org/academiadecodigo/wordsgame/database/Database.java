@@ -1,18 +1,18 @@
 package org.academiadecodigo.wordsgame.database;
 
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import org.academiadecodigo.wordsgame.entities.database.*;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 public class Database {
 
@@ -43,15 +43,14 @@ public class Database {
      */
     public DatabaseEnvData setVarsFromCurrentEnvFile() {
         return new DatabaseEnvData(
-            getFileVariable("db.databaseSetupFilePath"),
-            getFileVariable("db.completeUrl"),
-            getFileVariable("db.url"),
-            getFileVariable("db.username"),
-            getFileVariable("db.password"),
-            getFileVariable("db.name"),
-            getFileVariable("db.inGameRootUser"),
-            getFileVariable("db.inGameRootPass")
-        );
+                getFileVariable("db.databaseSetupFilePath"),
+                getFileVariable("db.completeUrl"),
+                getFileVariable("db.url"),
+                getFileVariable("db.username"),
+                getFileVariable("db.password"),
+                getFileVariable("db.name"),
+                getFileVariable("db.inGameRootUser"),
+                getFileVariable("db.inGameRootPass"));
     }
 
     private String getFileVariable(String variable) {
@@ -67,13 +66,13 @@ public class Database {
         try {
             if (connection == null || connection.isClosed()) {
                 try {
-                    //If already exists
-                    connection = DriverManager
-                            .getConnection(dataBaseData.completeUrl, dataBaseData.dbRoot, dataBaseData.dbRootPass);
+                    // If already exists
+                    connection = DriverManager.getConnection(
+                            dataBaseData.completeUrl, dataBaseData.dbRoot, dataBaseData.dbRootPass);
                 } catch (SQLException e) {
-                    //If table or db do not exist yet
-                    connection = DriverManager
-                            .getConnection(dataBaseData.url, dataBaseData.dbRoot, dataBaseData.dbRootPass);
+                    // If table or db do not exist yet
+                    connection =
+                            DriverManager.getConnection(dataBaseData.url, dataBaseData.dbRoot, dataBaseData.dbRootPass);
                     setupDbStructure();
                 }
             }
@@ -88,7 +87,7 @@ public class Database {
      */
     public void setupDbStructure() {
         Arrays.stream(QueryType.values())
-                //.filter(query -> query != QueryType.QUERY_WORDS) // Exclude QUERY_WORDS enum value
+                // .filter(query -> query != QueryType.QUERY_WORDS) // Exclude QUERY_WORDS enum value
                 .forEach(this::setupDBStaticStructure);
     }
 
@@ -170,9 +169,7 @@ public class Database {
 
     public void dropTable() throws SQLException {
         Statement queryStatement = connection.createStatement();
-        queryStatement.executeUpdate(
-                "DROP DATABASE IF EXISTS " + dataBaseData.dbName + ";"
-        );
+        queryStatement.executeUpdate("DROP DATABASE IF EXISTS " + dataBaseData.dbName + ";");
     }
 
     /**

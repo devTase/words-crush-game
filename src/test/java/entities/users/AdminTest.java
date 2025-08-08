@@ -1,11 +1,14 @@
 package entities.users;
 
+import static org.junit.jupiter.api.Assertions.*;
+
+import java.net.Socket;
 import org.academiadecodigo.wordsgame.application.server.ClientDispatch;
 import org.academiadecodigo.wordsgame.entities.users.Admin;
-import org.academiadecodigo.wordsgame.game.stages.WaitingRoom;
-import org.academiadecodigo.wordsgame.game.stages.GameRoom;
 import org.academiadecodigo.wordsgame.game.stages.FinishRoom;
+import org.academiadecodigo.wordsgame.game.stages.GameRoom;
 import org.academiadecodigo.wordsgame.game.stages.Stage;
+import org.academiadecodigo.wordsgame.game.stages.WaitingRoom;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -13,29 +16,25 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-import java.net.Socket;
-
-import static org.junit.jupiter.api.Assertions.*;
-
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class AdminTest {
 
     @Mock
     private ClientDispatch mockClientDispatch;
-    
+
     @Mock
     private Socket mockSocket;
-    
+
     @Mock
     private WaitingRoom mockWaitingRoom;
-    
+
     @Mock
     private GameRoom mockGameRoom;
-    
+
     @Mock
     private FinishRoom mockFinishRoom;
-    
+
     private Admin admin;
 
     @BeforeEach
@@ -52,10 +51,10 @@ public class AdminTest {
         void getActualStage_should_return_correct_stage() {
             // given
             admin.setActualStage(mockGameRoom);
-            
+
             // when
             Stage result = admin.getActualStage();
-            
+
             // then
             assertEquals(mockGameRoom, result);
         }
@@ -71,7 +70,7 @@ public class AdminTest {
         @DisplayName("Should start with correct initial state")
         void should_start_with_correct_initial_state() {
             // given - admin created in setUp
-            
+
             // then
             assertEquals(mockWaitingRoom, admin.getActualStage());
             assertEquals("adminUser", admin.getUserName());
@@ -90,7 +89,7 @@ public class AdminTest {
             admin.setLives(5);
             admin.setReady(true);
             admin.setReadRules(true);
-            
+
             // then
             assertEquals(100, admin.getScore());
             assertEquals(5, admin.getLives());

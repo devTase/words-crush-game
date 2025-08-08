@@ -2,7 +2,7 @@ package org.academiadecodigo.wordsgame.game.stages;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 
-public class ChangeStage  {
+public class ChangeStage {
 
     private static Stage finishStage = null;
 
@@ -24,10 +24,10 @@ public class ChangeStage  {
      * @return Stage
      */
     protected static Stage setFinishStage(Stage oldStage) {
-        if(finishStage == null) {
-            return finishStage = new FinishRoom(oldStage.getGrid(), oldStage.getMaxPlayers(), new CopyOnWriteArrayList<>());
+        if (finishStage == null) {
+            return finishStage =
+                    new FinishRoom(oldStage.getGrid(), oldStage.getMaxPlayers(), new CopyOnWriteArrayList<>());
         }
         return finishStage;
     }
-
 }

@@ -1,8 +1,8 @@
 package org.academiadecodigo.wordsgame.database;
 
-import org.academiadecodigo.wordsgame.entities.users.Role;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.academiadecodigo.wordsgame.entities.users.Role;
 
 public class DatabaseEnvData {
     String databaseSetupFilePath;
@@ -16,7 +16,15 @@ public class DatabaseEnvData {
     String rootRole;
     String enumRoles;
 
-    public DatabaseEnvData(String databaseSetupFilePath, String completeUrl, String url, String dbRoot, String dbRootPass, String dbName, String inGameRootUser, String inGameRootPass) {
+    public DatabaseEnvData(
+            String databaseSetupFilePath,
+            String completeUrl,
+            String url,
+            String dbRoot,
+            String dbRootPass,
+            String dbName,
+            String inGameRootUser,
+            String inGameRootPass) {
         this.databaseSetupFilePath = databaseSetupFilePath;
         this.completeUrl = completeUrl;
         this.url = url;
@@ -30,9 +38,7 @@ public class DatabaseEnvData {
     }
 
     private String getEnumRolesAsString() {
-        return Stream.of(Role.values())
-                .map(role -> "'" + role.name() + "'")
-                .collect(Collectors.joining(", "));
+        return Stream.of(Role.values()).map(role -> "'" + role.name() + "'").collect(Collectors.joining(", "));
     }
 
     // Getters and Setters

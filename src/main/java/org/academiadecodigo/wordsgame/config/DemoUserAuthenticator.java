@@ -1,8 +1,8 @@
 package org.academiadecodigo.wordsgame.config;
 
+import jakarta.inject.Inject;
 import org.academiadecodigo.wordsgame.entities.users.Role;
 import org.academiadecodigo.wordsgame.service.UserAuthenticator;
-import jakarta.inject.Inject;
 
 public class DemoUserAuthenticator extends UserAuthenticator {
 

@@ -1,7 +1,6 @@
 package org.academiadecodigo.wordsgame.game.commands.executors.list;
 
 public enum CommandsList {
-
     PM("/pm"),
     KICK("/kick"),
     STARTALL("/start -a"),

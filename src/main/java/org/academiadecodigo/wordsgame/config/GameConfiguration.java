@@ -14,7 +14,7 @@ public class GameConfiguration {
     public GameConfiguration() {
         ResourceBundle appProps = ResourceBundle.getBundle("application");
         this.environment = appProps.getString("env");
-        
+
         ResourceBundle envProps = ResourceBundle.getBundle("application-" + environment);
         this.serverPort = Integer.parseInt(envProps.getString("server.port"));
         this.maxClients = Integer.parseInt(envProps.getString("game.max-clients"));

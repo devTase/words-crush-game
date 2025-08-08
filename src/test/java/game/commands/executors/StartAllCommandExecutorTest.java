@@ -1,4 +1,3 @@
 package game.commands.executors;
 
-public class StartAllCommandExecutorTest {
-}
+public class StartAllCommandExecutorTest {}

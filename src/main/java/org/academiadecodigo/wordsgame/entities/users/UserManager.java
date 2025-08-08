@@ -1,11 +1,10 @@
 package org.academiadecodigo.wordsgame.entities.users;
 
-import org.academiadecodigo.wordsgame.prompt.Prompt;
+import java.io.PrintWriter;
 import org.academiadecodigo.wordsgame.game.PromptMenu;
 import org.academiadecodigo.wordsgame.misc.Messages;
+import org.academiadecodigo.wordsgame.prompt.Prompt;
 import org.academiadecodigo.wordsgame.service.UserAuthenticator;
-
-import java.io.PrintWriter;
 
 public class UserManager {
 
@@ -25,13 +24,13 @@ public class UserManager {
     }
 
     public void register() {
-        Integer accountType = promptMenuInt.createNewMenu(new String[]{"Admin", "Player"}, "Select an account type to create:", prompt);
+        Integer accountType = promptMenuInt.createNewMenu(
+                new String[] {"Admin", "Player"}, "Select an account type to create:", prompt);
 
         switch (accountType) {
             case 1 -> adminRegistration();
             case 2 -> playerRegistration();
-            default -> {
-            }
+            default -> {}
         }
     }
 
@@ -40,14 +39,14 @@ public class UserManager {
         String userName = promptMenuString.createNewQuestion(Messages.getMessage("INFO_SET_NICKNAME"), prompt);
         String password = promptMenuString.createNewQuestion(Messages.getMessage("INFO_SET_PASSWORD"), prompt);
 
-        if(userAuthenticator.login(userName, password)) {
+        if (userAuthenticator.login(userName, password)) {
             outStream.println(Messages.getMessage("WELCOME"));
             this.userName = userName;
-            //TODO: Show a dashboard with all the user data here
+            // TODO: Show a dashboard with all the user data here
         } else {
             outStream.println("No User Found with this details. Bye");
             outStream.close();
-            //TODO Should close the client
+            // TODO Should close the client
         }
     }
 
@@ -63,7 +62,7 @@ public class UserManager {
         String userName = promptMenuString.createNewQuestion("Login with root privileges first.\nRootName: ", prompt);
         String password = promptMenuString.createNewQuestion(Messages.getMessage("INFO_SET_PASSWORD"), prompt);
 
-        if(isRoot(userName, password)) {
+        if (isRoot(userName, password)) {
             userName = promptMenuString.createNewQuestion("Set Admin Name: ", prompt);
             password = promptMenuString.createNewQuestion(Messages.getMessage("INFO_SET_PASSWORD"), prompt);
 

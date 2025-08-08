@@ -1,5 +1,8 @@
 package repository;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
 import org.academiadecodigo.wordsgame.database.Database;
 import org.academiadecodigo.wordsgame.database.DatabaseEnvData;
 import org.academiadecodigo.wordsgame.entities.users.Role;
@@ -8,11 +11,6 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import java.sql.SQLException;
-import java.util.Objects;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ExtendWith(MockitoExtension.class)
@@ -20,7 +18,7 @@ public class UserAuthenticatorTest {
 
     @Mock
     private Database mockDatabase;
-    
+
     private UserAuthenticator userAuthenticator;
     private Database database;
     private final String ENV_TEST = "test";
@@ -31,16 +29,15 @@ public class UserAuthenticatorTest {
     public void setUp() {
         // Create instances without database connection for unit testing
         dataBaseData = new DatabaseEnvData(
-            "db-setup.sql",
-            "jdbc:mysql://localhost:3306/test",
-            "localhost:3306", 
-            "root",
-            "password",
-            "testdb",
-            "sprint",
-            "pass"
-        );
-        
+                "db-setup.sql",
+                "jdbc:mysql://localhost:3306/test",
+                "localhost:3306",
+                "root",
+                "password",
+                "testdb",
+                "sprint",
+                "pass");
+
         // We use mocks instead of real database for unit tests
         userAuthenticator = new UserAuthenticator(mockDatabase);
         assertNotNull(userAuthenticator);
@@ -66,11 +63,12 @@ public class UserAuthenticatorTest {
     public void testMockDatabaseInteraction() {
         // Test that we can mock database interactions
         when(mockDatabase.executeUpdate(anyString())).thenReturn(1);
-        
+
         // Verify basic mock functionality
-        int result = mockDatabase.executeUpdate("INSERT INTO users (username, password, role) VALUES ('test', 'test', 'PLAYER')");
+        int result = mockDatabase.executeUpdate(
+                "INSERT INTO users (username, password, role) VALUES ('test', 'test', 'PLAYER')");
         assertEquals(1, result);
-        
+
         verify(mockDatabase).executeUpdate(anyString());
     }
 
@@ -80,10 +78,9 @@ public class UserAuthenticatorTest {
         assertEquals("ADMIN", Role.ADMIN.toString());
         assertEquals("PLAYER", Role.PLAYER.toString());
         assertEquals("ROOT", Role.ROOT.toString());
-        
+
         // Test enum values
         Role[] roles = Role.values();
         assertTrue(roles.length >= 3);
     }
-
 }

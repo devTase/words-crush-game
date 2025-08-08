@@ -33,28 +33,24 @@ public class Messages {
     }
 
     public static String drawWinner(String userName) {
-        return
-                "    -----------------\n" +
-                        "    |@@@@|     |####|\n" +
-                        "    |@@@@|     |####|\n" +
-                        "    |@@@@|     |####|\n" +
-                        "     |@@@|     |###|\n" +
-                        "      |@@|     |##|\n" +
-                        "      `@@|_____|##'\n" +
-                        "           (O)\n" +
-                        "        .-'''''-.\n" +
-                        "      .'  * * *  `.\n" +
-                        "     :  *       *  :\n" +
-                        "          " + userName + "\n" +
-                        "     :~           ~:\n" +
-                        "     :  *       *  :\n" +
-                        "      `.  * * *  .'\n" +
-                        "        `-.....-'\n";
+        return "    -----------------\n" + "    |@@@@|     |####|\n"
+                + "    |@@@@|     |####|\n"
+                + "    |@@@@|     |####|\n"
+                + "     |@@@|     |###|\n"
+                + "      |@@|     |##|\n"
+                + "      `@@|_____|##'\n"
+                + "           (O)\n"
+                + "        .-'''''-.\n"
+                + "      .'  * * *  `.\n"
+                + "     :  *       *  :\n"
+                + "          "
+                + userName + "\n" + "     :~           ~:\n"
+                + "     :  *       *  :\n"
+                + "      `.  * * *  .'\n"
+                + "        `-.....-'\n";
     }
-
 
     public static String getScoreMessage(int i) {
         return String.format("P.Score > %s | ", getMessage(String.format("server.grid.score.%d", i)));
     }
 }
-

@@ -2,8 +2,7 @@ package org.academiadecodigo.wordsgame.game.grid.server;
 
 import java.util.List;
 
-public enum ScoresLevelType  {
-
+public enum ScoresLevelType {
     LEVEL0(0),
     LEVEL1(15),
     LEVEL2(50),
@@ -26,17 +25,16 @@ public enum ScoresLevelType  {
         return List.of(ScoresLevelType.values());
     }
 
-    public static Integer returnEnumValueByValueCheck(Integer value){
+    public static Integer returnEnumValueByValueCheck(Integer value) {
         int counter = 0;
 
-        for(ScoresLevelType v: getEnumAsStream()) {
+        for (ScoresLevelType v : getEnumAsStream()) {
 
-            if(v.score.equals(value)) {
+            if (v.score.equals(value)) {
                 return counter;
             }
             counter++;
         }
         return counter;
     }
-
 }

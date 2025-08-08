@@ -1,7 +1,7 @@
 package org.academiadecodigo.wordsgame.entities.database;
 
-import org.academiadecodigo.wordsgame.database.DatabaseEnvData;
 import java.util.function.Function;
+import org.academiadecodigo.wordsgame.database.DatabaseEnvData;
 
 public enum DataBaseVariablesType {
     COMPLETE_URL(DatabaseEnvData::getCompleteUrl),

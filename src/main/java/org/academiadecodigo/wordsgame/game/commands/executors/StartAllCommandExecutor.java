@@ -1,16 +1,14 @@
 package org.academiadecodigo.wordsgame.game.commands.executors;
 
+import java.util.List;
 import org.academiadecodigo.wordsgame.entities.users.Admin;
 import org.academiadecodigo.wordsgame.entities.users.User;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
 import org.academiadecodigo.wordsgame.game.commands.executors.list.CommandsList;
-import org.academiadecodigo.wordsgame.game.stages.Stage;
 import org.academiadecodigo.wordsgame.game.stages.WaitingRoom;
 import org.academiadecodigo.wordsgame.misc.Messages;
 
-import java.util.List;
-
-public class StartAllCommandExecutor extends CommandExecutor{
+public class StartAllCommandExecutor extends CommandExecutor {
 
     public static final String START_ALL_COMMAND = CommandsList.STARTALL.getCommand();
 
@@ -21,9 +19,9 @@ public class StartAllCommandExecutor extends CommandExecutor{
 
     @Override
     protected String executeValidCommand(String command, User user, List<User> userList) {
-        return (user instanceof Admin) ?
-                setAllPlayersReady(userList) :
-                Messages.getMessage("INFO_INSUFFICIENT_ADMIN_RIGHTS");
+        return (user instanceof Admin)
+                ? setAllPlayersReady(userList)
+                : Messages.getMessage("INFO_INSUFFICIENT_ADMIN_RIGHTS");
     }
 
     /**
@@ -33,11 +31,11 @@ public class StartAllCommandExecutor extends CommandExecutor{
      */
     private String setAllPlayersReady(List<User> userList) {
         userList.forEach(user -> user.setReady(true));
-        
+
         // Force start the waiting room thread if not already running
         // This allows admin to start the game even without max players
         WaitingRoom.forceStart();
-        
+
         return ChatCommandsMessagesTrafficManager.commandStartAll();
     }
 }

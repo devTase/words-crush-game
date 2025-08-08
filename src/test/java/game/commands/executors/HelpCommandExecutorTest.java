@@ -1,5 +1,10 @@
 package game.commands.executors;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import org.academiadecodigo.wordsgame.entities.users.User;
 import org.academiadecodigo.wordsgame.game.commands.executors.HelpCommandExecutor;
 import org.academiadecodigo.wordsgame.game.commands.executors.list.CommandsList;
@@ -11,19 +16,13 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockito.junit.jupiter.MockitoSettings;
 import org.mockito.quality.Strictness;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 @ExtendWith(MockitoExtension.class)
 @MockitoSettings(strictness = Strictness.LENIENT)
 public class HelpCommandExecutorTest {
 
     @Mock
     private User mockUser;
-    
+
     private HelpCommandExecutor helpCommandExecutor;
     private List<User> usersList;
 
@@ -43,10 +42,10 @@ public class HelpCommandExecutorTest {
         void isApplicable_should_return_true_when_command_is_help() {
             // given
             String helpCommand = "/help";
-            
+
             // when
             boolean result = helpCommandExecutor.isApplicable(helpCommand);
-            
+
             // then
             assertTrue(result);
         }
@@ -56,10 +55,10 @@ public class HelpCommandExecutorTest {
         void isApplicable_should_return_false_when_command_is_not_help() {
             // given
             String nonHelpCommand = "/start";
-            
+
             // when
             boolean result = helpCommandExecutor.isApplicable(nonHelpCommand);
-            
+
             // then
             assertFalse(result);
         }
@@ -69,10 +68,10 @@ public class HelpCommandExecutorTest {
         void isApplicable_should_return_false_when_command_is_empty() {
             // given
             String emptyCommand = "";
-            
+
             // when
             boolean result = helpCommandExecutor.isApplicable(emptyCommand);
-            
+
             // then
             assertFalse(result);
         }
@@ -82,7 +81,7 @@ public class HelpCommandExecutorTest {
         void isApplicable_should_throw_NPE_when_command_is_null() {
             // given
             String nullCommand = null;
-            
+
             // when & then
             assertThrows(NullPointerException.class, () -> helpCommandExecutor.isApplicable(nullCommand));
         }
@@ -98,10 +97,10 @@ public class HelpCommandExecutorTest {
             // given
             String helpCommand = "/help";
             String expectedHelpText = "List Of Commands: " + List.of(CommandsList.values());
-            
+
             // when
             String result = helpCommandExecutor.execute(helpCommand, mockUser, usersList);
-            
+
             // then
             assertEquals(expectedHelpText, result);
         }
@@ -112,10 +111,10 @@ public class HelpCommandExecutorTest {
             // given
             String nonHelpCommand = "/invalid";
             String expectedMessage = Messages.getMessage("INFO_INVALID_COMMAND");
-            
+
             // when
             String result = helpCommandExecutor.execute(nonHelpCommand, mockUser, usersList);
-            
+
             // then
             assertEquals(expectedMessage, result);
         }
@@ -125,10 +124,10 @@ public class HelpCommandExecutorTest {
         void execute_should_return_help_text_containing_all_available_commands() {
             // given
             String helpCommand = "/help";
-            
+
             // when
             String result = helpCommandExecutor.execute(helpCommand, mockUser, usersList);
-            
+
             // then
             assertNotNull(result);
             assertTrue(result.contains("List Of Commands:"));

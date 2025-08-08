@@ -1,9 +1,9 @@
 package org.academiadecodigo.wordsgame.game.grid.game;
 
-import org.academiadecodigo.wordsgame.misc.Messages;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import org.academiadecodigo.wordsgame.misc.Messages;
 
 public class Grid {
 
@@ -12,7 +12,7 @@ public class Grid {
     private static String[][] wordMatrix;
     private int rows;
 
-    public Grid(String filePath){
+    public Grid(String filePath) {
         this.PATH = filePath;
         this.cols = 10;
         this.rows = checkRowSize();
@@ -76,7 +76,6 @@ public class Grid {
             for (int j = 0; j < wordMatrix[i].length; j++) {
 
                 sb.append(wordMatrix[i][j]);
-
             }
             sb.append("\n");
         }
@@ -95,10 +94,10 @@ public class Grid {
         for (int i = 0; i < wordMatrix.length; i++) {
             for (int j = 0; j < wordMatrix[i].length; j++) {
 
-                //Remove the blank spaces of the word:
+                // Remove the blank spaces of the word:
                 String trimmedWord = wordMatrix[i][j].trim();
 
-                //If word equals to player input:
+                // If word equals to player input:
                 if (str.equals(trimmedWord)) {
 
                     score += trimmedWord.length();

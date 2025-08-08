@@ -1,12 +1,12 @@
 package org.academiadecodigo.wordsgame.game.grid.server;
 
+import java.util.*;
 import org.academiadecodigo.wordsgame.entities.users.User;
 import org.academiadecodigo.wordsgame.misc.Messages;
-import java.util.*;
 
 public class ServerGrid {
 
-    private final static int ROWS = (Integer.parseInt(Messages.getProperty("server.grid.rows.number")));
+    private static final int ROWS = (Integer.parseInt(Messages.getProperty("server.grid.rows.number")));
     private ScoresService sc;
 
     public ServerGrid() {
@@ -18,7 +18,7 @@ public class ServerGrid {
      * @param usersQuantity
      * @return String[][]
      */
-    private String[][] createGridStructure(int usersQuantity){
+    private String[][] createGridStructure(int usersQuantity) {
 
         String grid[][] = new String[ROWS][usersQuantity];
 
@@ -43,7 +43,9 @@ public class ServerGrid {
         sb.append(Messages.getMessage("SERVER_SCORE_DASHBOARD") + Messages.getMessage("BREAK_LINE"));
         sb.append(Messages.getMessage("SERVER_SCORE_DASHBOARD_PLAYER_NAME") + Messages.getMessage("BREAK_LINE"));
         for (User user : userList) {
-            sb.append(user.getUserName().charAt(0)).append(user.getUserName().charAt(1)).append(" ");
+            sb.append(user.getUserName().charAt(0))
+                    .append(user.getUserName().charAt(1))
+                    .append(" ");
         }
         sb.append("\n");
 
@@ -57,12 +59,13 @@ public class ServerGrid {
         return sb.toString();
     }
 
-    private void sendPlayerScoresToGrid(List<User> userList, String[][] grid){
+    private void sendPlayerScoresToGrid(List<User> userList, String[][] grid) {
 
         int index;
         for (int i = 0; i < ScoresLevelType.values().length; i++) {
-            for(int j = 0; j < userList.size(); j++) {
-                index = setIndexBasedOnScore(sc.getNearestValue(userList.get(j).getScore(), sc.getScoresFromProperties()));
+            for (int j = 0; j < userList.size(); j++) {
+                index = setIndexBasedOnScore(
+                        sc.getNearestValue(userList.get(j).getScore(), sc.getScoresFromProperties()));
                 grid[i][index] = String.valueOf(userList.get(j).getLives());
             }
         }

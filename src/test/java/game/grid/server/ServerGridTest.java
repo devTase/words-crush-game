@@ -1,4 +1,3 @@
 package game.grid.server;
 
-public class ServerGridTest {
-}
+public class ServerGridTest {}

@@ -1,9 +1,12 @@
 package org.academiadecodigo.wordsgame.application.server;
 
-import org.academiadecodigo.wordsgame.prompt.Prompt;
-import org.academiadecodigo.wordsgame.entities.users.*;
-import org.academiadecodigo.wordsgame.service.UserAuthenticator;
+import java.io.*;
+import java.net.Socket;
+import java.util.LinkedList;
+import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.academiadecodigo.wordsgame.config.GameConfiguration;
+import org.academiadecodigo.wordsgame.entities.users.*;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
 import org.academiadecodigo.wordsgame.game.PromptMenu;
 import org.academiadecodigo.wordsgame.game.grid.game.Grid;
@@ -11,12 +14,9 @@ import org.academiadecodigo.wordsgame.game.stages.Stage;
 import org.academiadecodigo.wordsgame.game.stages.WaitingRoom;
 import org.academiadecodigo.wordsgame.misc.Colors;
 import org.academiadecodigo.wordsgame.misc.Messages;
+import org.academiadecodigo.wordsgame.prompt.Prompt;
+import org.academiadecodigo.wordsgame.service.UserAuthenticator;
 import org.jetbrains.annotations.NotNull;
-import java.io.*;
-import java.net.Socket;
-import java.util.LinkedList;
-import java.util.Optional;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ClientDispatch implements Runnable {
 
@@ -35,12 +35,13 @@ public class ClientDispatch implements Runnable {
     private Socket socket;
     private PrintWriter outStream;
 
-    public ClientDispatch(Socket socket, String filePath, UserAuthenticator userAuthenticator, GameConfiguration gameConfiguration) {
+    public ClientDispatch(
+            Socket socket, String filePath, UserAuthenticator userAuthenticator, GameConfiguration gameConfiguration) {
         this.socket = socket;
         this.userAuthenticator = userAuthenticator;
         this.gameConfiguration = gameConfiguration;
         this.promptMenu = new PromptMenu<>();
-        
+
         try {
             this.prompt = new Prompt(socket.getInputStream(), new PrintStream(socket.getOutputStream()));
             this.outStream = new PrintWriter(socket.getOutputStream(), true);
@@ -62,12 +63,12 @@ public class ClientDispatch implements Runnable {
      * Check the Name User choose to Login and creates user as per login.
      * @throws IOException
      */
-    private void setupUser()  {
+    private void setupUser() {
 
         this.um = new UserManager(this.outStream, this.prompt, this.userAuthenticator);
 
-        int connectionType = promptMenu.createNewMenu(new String[]{"Register", "Login"}, "Select", prompt);
-        if(connectionType == 1) {
+        int connectionType = promptMenu.createNewMenu(new String[] {"Register", "Login"}, "Select", prompt);
+        if (connectionType == 1) {
             um.register();
         }
         um.login();
@@ -87,7 +88,8 @@ public class ClientDispatch implements Runnable {
         registerInWaitingRoom(user);
         registerInChatManagerClass(user);
 
-        if(actualStage.getUsersInTheRoom().size() == gameConfiguration.getMaxClients()) createAndStartNewThread(actualStage);
+        if (actualStage.getUsersInTheRoom().size() == gameConfiguration.getMaxClients())
+            createAndStartNewThread(actualStage);
 
         createAndStartNewThread(user);
         welcomeMessageNotifications(user);
@@ -108,7 +110,16 @@ public class ClientDispatch implements Runnable {
      */
     private @NotNull Admin setupNewAdminAccount() {
         // TODO: in future get this data from DTO
-        return new Admin(this.id, String.format("[ADMIN]%s", this.um.getUserName()),0, 3, false, this, socket, actualStage, false);
+        return new Admin(
+                this.id,
+                String.format("[ADMIN]%s", this.um.getUserName()),
+                0,
+                3,
+                false,
+                this,
+                socket,
+                actualStage,
+                false);
     }
 
     /**
@@ -117,18 +128,21 @@ public class ClientDispatch implements Runnable {
      * @return
      */
     private void welcomeMessageNotifications(User user) {
-        ChatCommandsMessagesTrafficManager.sendMessageToChat(user, String.format(Messages.getMessage("INFO_CONNECTED_JOINED_WAITING_ROOM"), user.getUserName()));
-        ChatCommandsMessagesTrafficManager.sendMessageToServer(
-                String.format(Messages.getMessage("INFO_PLAYER_JUST_CONNECTED"), Colors.WHITE_UNDERLINED, user.getUserName(), Colors.RESET)
-        );
+        ChatCommandsMessagesTrafficManager.sendMessageToChat(
+                user, String.format(Messages.getMessage("INFO_CONNECTED_JOINED_WAITING_ROOM"), user.getUserName()));
+        ChatCommandsMessagesTrafficManager.sendMessageToServer(String.format(
+                Messages.getMessage("INFO_PLAYER_JUST_CONNECTED"),
+                Colors.WHITE_UNDERLINED,
+                user.getUserName(),
+                Colors.RESET));
     }
 
     /**
      * Send created user to waiting room
      * @param user
      */
-    private void registerInWaitingRoom(User user){
-        if(actualStage instanceof WaitingRoom) {
+    private void registerInWaitingRoom(User user) {
+        if (actualStage instanceof WaitingRoom) {
             ((WaitingRoom) actualStage).registerUserInStage(user);
         }
     }
@@ -137,7 +151,7 @@ public class ClientDispatch implements Runnable {
      * Send created user to Chat Class manager
      * @param user
      */
-    private void registerInChatManagerClass(User user){
+    private void registerInChatManagerClass(User user) {
         ChatCommandsMessagesTrafficManager.registerUserForChatsManagement(user);
     }
 
@@ -146,7 +160,8 @@ public class ClientDispatch implements Runnable {
      * Starts the thread after users are created
      */
     private Stage createInstanceOfStage(String filePath) {
-        return WaitingRoom.getInstance(new Grid(filePath), gameConfiguration.getMaxClients(), new CopyOnWriteArrayList<>());
+        return WaitingRoom.getInstance(
+                new Grid(filePath), gameConfiguration.getMaxClients(), new CopyOnWriteArrayList<>());
     }
 
     /**
@@ -186,7 +201,7 @@ public class ClientDispatch implements Runnable {
     public void notifyPlayer(String message) {
 
         // saves the message to the list
-        if(isPlayerNotReading) {
+        if (isPlayerNotReading) {
             this.bufferedMessages.add(message);
             return;
         }
@@ -203,7 +218,7 @@ public class ClientDispatch implements Runnable {
 
     public void setIsPlayerNotReading(Boolean state) {
         this.isPlayerNotReading = state;
-        if(!state) this.sendBufferedMessagesToPlayer();
+        if (!state) this.sendBufferedMessagesToPlayer();
     }
 
     // Getters and Setters

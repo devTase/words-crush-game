@@ -13,13 +13,13 @@ public class ProjectProperties {
     }
 
     public static ProjectProperties getInstance() {
-        if(pp == null) {
+        if (pp == null) {
             return pp = new ProjectProperties();
         }
         return pp;
     }
 
-    private void setProperties(){
+    private void setProperties() {
         properties.put("admin.name", "admin");
         properties.put("admin.password", "bullshit");
         properties.put("server.grid.rows.number", "7");
@@ -34,5 +34,4 @@ public class ProjectProperties {
     public String getProperty(String propertyName) {
         return properties.get(propertyName);
     }
-
 }

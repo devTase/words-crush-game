@@ -1,12 +1,12 @@
 package org.academiadecodigo.wordsgame.config;
 
-import org.academiadecodigo.wordsgame.database.Database;
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
+import org.academiadecodigo.wordsgame.database.Database;
 
 public class DemoDatabase extends Database {
-    
+
     private Map<String, Map<String, String>> users;
     private boolean isConnected = false;
 
@@ -19,13 +19,13 @@ public class DemoDatabase extends Database {
         adminUser.put("password", "admin");
         adminUser.put("role", "ROOT");
         users.put("admin", adminUser);
-        
+
         Map<String, String> playerUser = new HashMap<>();
         playerUser.put("username", "player");
         playerUser.put("password", "player");
         playerUser.put("role", "PLAYER");
         users.put("player", playerUser);
-        
+
         System.out.println("🎮 Demo Database initialized with in-memory data");
         System.out.println("   Available users: admin/admin (ROOT), player/player (PLAYER)");
     }
@@ -40,7 +40,8 @@ public class DemoDatabase extends Database {
     public Connection getConnection() {
         // Return a mock connection that throws UnsupportedOperationException
         // This is just for demo purposes - in a real implementation you'd want a proper mock
-        throw new UnsupportedOperationException("Demo database doesn't support direct SQL operations. Use the demo methods instead.");
+        throw new UnsupportedOperationException(
+                "Demo database doesn't support direct SQL operations. Use the demo methods instead.");
     }
 
     @Override

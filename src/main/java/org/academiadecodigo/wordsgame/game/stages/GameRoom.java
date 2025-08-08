@@ -1,13 +1,11 @@
 package org.academiadecodigo.wordsgame.game.stages;
 
-import org.academiadecodigo.wordsgame.application.server.GameServer;
+import java.util.List;
 import org.academiadecodigo.wordsgame.entities.users.User;
-import org.academiadecodigo.wordsgame.config.GameConfiguration;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
 import org.academiadecodigo.wordsgame.game.grid.game.Grid;
 import org.academiadecodigo.wordsgame.game.grid.server.ServerGrid;
 import org.academiadecodigo.wordsgame.misc.Messages;
-import java.util.List;
 
 public class GameRoom extends Stage {
 
@@ -29,11 +27,11 @@ public class GameRoom extends Stage {
     public void checkUserInput(User user, String message) {
 
         int score = getGrid().checkPlayerInput(message);
-        if(score > 0) {
-            user.setScore(user.getScore()+score);
+        if (score > 0) {
+            user.setScore(user.getScore() + score);
             return;
         }
-        user.setLives(user.getLives()-1);
+        user.setLives(user.getLives() - 1);
     }
 
     /**
@@ -51,19 +49,19 @@ public class GameRoom extends Stage {
         ChatCommandsMessagesTrafficManager.clearScreenServerSide();
     }
 
-    public synchronized void playerLost(User user){
+    public synchronized void playerLost(User user) {
         ((FinishRoom) finishStage).addUserToStage(user);
-        if(finishStage.getUsersInTheRoom().size() == getMaxPlayers()-1) checkForTheWinner();
+        if (finishStage.getUsersInTheRoom().size() == getMaxPlayers() - 1) checkForTheWinner();
     }
 
     private void checkForTheWinner() {
-        ((FinishRoom)finishStage).setWinner(getWinner());
+        ((FinishRoom) finishStage).setWinner(getWinner());
     }
 
     private User getWinner() {
 
-        for(User u : this.getUsersInTheRoom()) {
-            if(!finishStage.getUsersInTheRoom().contains(u)) {
+        for (User u : this.getUsersInTheRoom()) {
+            if (!finishStage.getUsersInTheRoom().contains(u)) {
                 gameIsFinished = true;
                 return u;
             }

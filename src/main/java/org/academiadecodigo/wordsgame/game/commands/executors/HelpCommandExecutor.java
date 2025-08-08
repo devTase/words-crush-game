@@ -1,12 +1,11 @@
 package org.academiadecodigo.wordsgame.game.commands.executors;
 
+import java.util.List;
 import org.academiadecodigo.wordsgame.entities.users.User;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
 import org.academiadecodigo.wordsgame.game.commands.executors.list.CommandsList;
 
-import java.util.List;
-
-public class HelpCommandExecutor extends CommandExecutor{
+public class HelpCommandExecutor extends CommandExecutor {
 
     public static final String HELP_COMMAND = CommandsList.HELP.getCommand();
 

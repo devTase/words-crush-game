@@ -1,11 +1,10 @@
 package org.academiadecodigo.wordsgame.application.server;
 
 import com.google.inject.Injector;
-import org.academiadecodigo.wordsgame.config.GameConfiguration;
-import org.academiadecodigo.wordsgame.service.UserAuthenticator;
-
 import jakarta.inject.Inject;
 import java.net.Socket;
+import org.academiadecodigo.wordsgame.config.GameConfiguration;
+import org.academiadecodigo.wordsgame.service.UserAuthenticator;
 
 public class ClientDispatchFactory {
 
@@ -14,9 +13,7 @@ public class ClientDispatchFactory {
     private final UserAuthenticator userAuthenticator;
 
     @Inject
-    public ClientDispatchFactory(Injector injector, 
-                               GameConfiguration config,
-                               UserAuthenticator userAuthenticator) {
+    public ClientDispatchFactory(Injector injector, GameConfiguration config, UserAuthenticator userAuthenticator) {
         this.injector = injector;
         this.config = config;
         this.userAuthenticator = userAuthenticator;

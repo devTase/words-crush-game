@@ -1,5 +1,10 @@
 package game.commands;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
+
+import java.util.Arrays;
+import java.util.List;
 import org.academiadecodigo.wordsgame.entities.users.User;
 import org.academiadecodigo.wordsgame.game.commands.CommandRunner;
 import org.academiadecodigo.wordsgame.game.commands.executors.CommandExecutor;
@@ -11,23 +16,17 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
-
 public class CommandRunnerTest {
 
     @Mock
     private CommandExecutor mockExecutor1;
-    
+
     @Mock
     private CommandExecutor mockExecutor2;
-    
+
     @Mock
     private User mockUser;
-    
+
     @Mock
     private List<User> mockUsersList;
 
@@ -48,10 +47,10 @@ public class CommandRunnerTest {
         void runCommand_should_return_invalid_blanks_message_when_command_is_empty() {
             // Given
             String emptyCommand = "";
-            
+
             // When
             String result = commandRunner.runCommand(emptyCommand, mockUser, mockUsersList);
-            
+
             // Then
             assertEquals(Messages.getMessage("INFO_INVALIDBLANKS"), result);
             verifyNoInteractions(mockExecutor1, mockExecutor2);
@@ -62,10 +61,10 @@ public class CommandRunnerTest {
         void runCommand_should_return_invalid_blanks_message_when_command_is_blank() {
             // Given
             String blankCommand = "   ";
-            
+
             // When
             String result = commandRunner.runCommand(blankCommand, mockUser, mockUsersList);
-            
+
             // Then
             assertEquals(Messages.getMessage("INFO_INVALIDBLANKS"), result);
             verifyNoInteractions(mockExecutor1, mockExecutor2);
@@ -83,10 +82,10 @@ public class CommandRunnerTest {
             String unknownCommand = "/unknown";
             when(mockExecutor1.isApplicable(unknownCommand)).thenReturn(false);
             when(mockExecutor2.isApplicable(unknownCommand)).thenReturn(false);
-            
+
             // When
             String result = commandRunner.runCommand(unknownCommand, mockUser, mockUsersList);
-            
+
             // Then
             assertEquals(Messages.getMessage("INFO_INVALID_COMMAND"), result);
             verify(mockExecutor1).isApplicable(unknownCommand);
@@ -105,13 +104,13 @@ public class CommandRunnerTest {
             // Given
             String validCommand = "/start";
             String expectedResult = "Command executed successfully";
-            
+
             when(mockExecutor1.isApplicable(validCommand)).thenReturn(true);
             when(mockExecutor1.execute(validCommand, mockUser, mockUsersList)).thenReturn(expectedResult);
-            
+
             // When
             String result = commandRunner.runCommand(validCommand, mockUser, mockUsersList);
-            
+
             // Then
             assertEquals(expectedResult, result);
             verify(mockExecutor1).isApplicable(validCommand);
@@ -125,14 +124,14 @@ public class CommandRunnerTest {
             // Given
             String validCommand = "/kick";
             String expectedResult = "Player kicked";
-            
+
             when(mockExecutor1.isApplicable(validCommand)).thenReturn(false);
             when(mockExecutor2.isApplicable(validCommand)).thenReturn(true);
             when(mockExecutor2.execute(validCommand, mockUser, mockUsersList)).thenReturn(expectedResult);
-            
+
             // When
             String result = commandRunner.runCommand(validCommand, mockUser, mockUsersList);
-            
+
             // Then
             assertEquals(expectedResult, result);
             verify(mockExecutor1).isApplicable(validCommand);

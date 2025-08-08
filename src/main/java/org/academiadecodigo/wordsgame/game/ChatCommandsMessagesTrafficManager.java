@@ -1,15 +1,15 @@
 package org.academiadecodigo.wordsgame.game;
 
-import org.academiadecodigo.wordsgame.prompt.Prompt;
-import org.academiadecodigo.wordsgame.entities.users.Player;
-import org.academiadecodigo.wordsgame.entities.users.User;
-import org.academiadecodigo.wordsgame.game.commands.executors.list.CommandsList;
-import org.academiadecodigo.wordsgame.misc.Messages;
-import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
+import org.academiadecodigo.wordsgame.entities.users.Player;
+import org.academiadecodigo.wordsgame.entities.users.User;
+import org.academiadecodigo.wordsgame.game.commands.executors.list.CommandsList;
+import org.academiadecodigo.wordsgame.misc.Messages;
+import org.academiadecodigo.wordsgame.prompt.Prompt;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This class will manage all the traffic messages
@@ -33,14 +33,13 @@ public class ChatCommandsMessagesTrafficManager {
         usersList.add(user);
     }
 
-
     /**
      * Send message to all users in game
      * @param message
      */
-    public synchronized static void sendMessageToAll(String message) {
+    public static synchronized void sendMessageToAll(String message) {
 
-        for(User user: usersList){
+        for (User user : usersList) {
             user.getClientDispatch().getOutStream().println(message);
         }
     }
@@ -48,7 +47,7 @@ public class ChatCommandsMessagesTrafficManager {
     /**
      * Method to clear user's side Screen
      */
-    public synchronized static void clearScreen(User user) {
+    public static synchronized void clearScreen(User user) {
         user.getClientDispatch().notifyPlayer(Messages.getMessage("ART_CLEAR_SCREEN"));
         user.getClientDispatch().notifyPlayer(Messages.getMessage("ART_GAME_TITLE"));
     }
@@ -77,8 +76,8 @@ public class ChatCommandsMessagesTrafficManager {
     private static List<User> removeUserFromList(@NotNull User originUser) {
 
         List<User> finalList = new CopyOnWriteArrayList<>();
-        for(User u : usersList) {
-            if(!u.equals(originUser)) finalList.add(u);
+        for (User u : usersList) {
+            if (!u.equals(originUser)) finalList.add(u);
         }
         return finalList;
     }
@@ -98,10 +97,10 @@ public class ChatCommandsMessagesTrafficManager {
      */
     public static void sendMessageToChat(User userOrigin, String message) {
 
-        for(User u : usersList) {
-//            if(!u.equals(userOrigin)) {
-                u.getClientDispatch().notifyPlayer(String.format("%s: %s", userOrigin.getUserName(),message));
-//            }
+        for (User u : usersList) {
+            //            if(!u.equals(userOrigin)) {
+            u.getClientDispatch().notifyPlayer(String.format("%s: %s", userOrigin.getUserName(), message));
+            //            }
         }
     }
 
@@ -128,7 +127,8 @@ public class ChatCommandsMessagesTrafficManager {
      */
     public static Prompt getUserPrompt(User user) {
         try {
-            PrintStream printStream = new PrintStream(user.getClientDispatch().getSocket().getOutputStream());
+            PrintStream printStream =
+                    new PrintStream(user.getClientDispatch().getSocket().getOutputStream());
             return new Prompt(user.getClientDispatch().getSocket().getInputStream(), printStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -150,12 +150,20 @@ public class ChatCommandsMessagesTrafficManager {
 
         User userDestiny = removeUserFromList(originUser)
                 .get(new PromptMenu<Integer>()
-                        .createNewMenu(strArray, Messages.getMessage("QUESTION_SELECT_PLAYER_TO_KICK"), getUserPrompt(originUser))-1);
+                                .createNewMenu(
+                                        strArray,
+                                        Messages.getMessage("QUESTION_SELECT_PLAYER_TO_KICK"),
+                                        getUserPrompt(originUser))
+                        - 1);
 
-        String kickReason = new PromptMenu<String>().createNewQuestion(Messages.getMessage("DEFINE_KICK_MESSAGE"), getUserPrompt(originUser));
-        userDestiny.getClientDispatch().notifyPlayer(String.format(Messages.getMessage("PLAYER_MESSAGE_FOR_KICK"), kickReason));
-        sendMessageToServer(String.format(Messages.getMessage("INFO_PLAYER_KICKED"), userDestiny.getUserName(), kickReason));
-        if(userDestiny instanceof Player) ((Player) userDestiny).kick();
+        String kickReason = new PromptMenu<String>()
+                .createNewQuestion(Messages.getMessage("DEFINE_KICK_MESSAGE"), getUserPrompt(originUser));
+        userDestiny
+                .getClientDispatch()
+                .notifyPlayer(String.format(Messages.getMessage("PLAYER_MESSAGE_FOR_KICK"), kickReason));
+        sendMessageToServer(
+                String.format(Messages.getMessage("INFO_PLAYER_KICKED"), userDestiny.getUserName(), kickReason));
+        if (userDestiny instanceof Player) ((Player) userDestiny).kick();
 
         return Messages.getMessage("YOU_KICKED_A_PLAYER");
     }

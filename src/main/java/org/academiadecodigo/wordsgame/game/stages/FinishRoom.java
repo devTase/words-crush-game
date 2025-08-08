@@ -1,9 +1,8 @@
 package org.academiadecodigo.wordsgame.game.stages;
 
+import java.util.List;
 import org.academiadecodigo.wordsgame.entities.users.User;
 import org.academiadecodigo.wordsgame.game.grid.game.Grid;
-
-import java.util.List;
 
 public class FinishRoom extends Stage {
 

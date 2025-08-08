@@ -1,6 +1,3 @@
 package entities.client;
 
-public class ClientDispatchTest {
-
-
-}
+public class ClientDispatchTest {}

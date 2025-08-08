@@ -1,18 +1,28 @@
 package org.academiadecodigo.wordsgame.entities.users;
 
-import org.academiadecodigo.wordsgame.application.server.ClientDispatch;
-import org.academiadecodigo.wordsgame.game.stages.Stage;
-import org.academiadecodigo.wordsgame.game.stages.WaitingRoom;
-import org.academiadecodigo.wordsgame.game.stages.GameRoom;
-import org.academiadecodigo.wordsgame.game.stages.FinishRoom;
-
 import java.io.IOException;
 import java.net.Socket;
+import org.academiadecodigo.wordsgame.application.server.ClientDispatch;
+import org.academiadecodigo.wordsgame.game.stages.FinishRoom;
+import org.academiadecodigo.wordsgame.game.stages.GameRoom;
+import org.academiadecodigo.wordsgame.game.stages.Stage;
+import org.academiadecodigo.wordsgame.game.stages.WaitingRoom;
+
 public class Player extends User {
 
     private boolean isKicked;
 
-    public Player(int id, String userName, int score, int lives, boolean isReady, ClientDispatch clientDispatch, Socket socket, Stage actualStage, boolean isKicked, boolean isReadyConfirmed) {
+    public Player(
+            int id,
+            String userName,
+            int score,
+            int lives,
+            boolean isReady,
+            ClientDispatch clientDispatch,
+            Socket socket,
+            Stage actualStage,
+            boolean isKicked,
+            boolean isReadyConfirmed) {
         super(id, userName, score, lives, isReady, clientDispatch, socket, actualStage, isReadyConfirmed);
         this.isKicked = isKicked;
     }
@@ -20,21 +30,21 @@ public class Player extends User {
     @Override
     public void run() {
 
-        while(isUserInWaitingRoom()) {
+        while (isUserInWaitingRoom()) {
             behaviourInWaitingRoom();
         }
 
         try {
-            Thread.sleep(1000); //Wait 1 sec so the grid has time to setup.
+            Thread.sleep(1000); // Wait 1 sec so the grid has time to setup.
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        while(isUserInGameRoom()){
+        while (isUserInGameRoom()) {
             behaviourInGameRoom();
         }
 
-        if(isUserInFinishSage()) {
+        if (isUserInFinishSage()) {
             behaviourInFinishGame();
         }
     }

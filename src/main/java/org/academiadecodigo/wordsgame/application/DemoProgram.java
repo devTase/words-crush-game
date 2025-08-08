@@ -2,11 +2,9 @@ package org.academiadecodigo.wordsgame.application;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import java.util.Scanner;
 import org.academiadecodigo.wordsgame.application.server.GameServer;
 import org.academiadecodigo.wordsgame.config.DemoGameModule;
-
-import java.io.IOException;
-import java.util.Scanner;
 
 public class DemoProgram {
 
@@ -22,11 +20,11 @@ public class DemoProgram {
             // Create Guice injector with our demo module
             System.out.println("🔧 Initializing Dependency Injection...");
             Injector injector = Guice.createInjector(new DemoGameModule());
-            
+
             // Get the GameServer instance with all dependencies injected
             System.out.println("🏗️  Creating Game Server instance...");
             GameServer server = injector.getInstance(GameServer.class);
-            
+
             System.out.println();
             System.out.println("✅ Game Server successfully started!");
             System.out.println("🌐 Server is listening for connections...");
@@ -39,10 +37,11 @@ public class DemoProgram {
             System.out.println("   - Network server ready for client connections");
             System.out.println();
             System.out.println("🚀 To connect a client:");
-            System.out.println("   mvn exec:java -Dexec.mainClass=\"org.academiadecodigo.wordsgame.application.client.Client\"");
+            System.out.println(
+                    "   mvn exec:java -Dexec.mainClass=\"org.academiadecodigo.wordsgame.application.client.Client\"");
             System.out.println();
             System.out.println("⏹️  Press ENTER to stop the server...");
-            
+
             // Start the server in a separate thread
             Thread serverThread = new Thread(() -> {
                 try {
@@ -52,7 +51,7 @@ public class DemoProgram {
                 }
             });
             serverThread.start();
-            
+
             // Wait for user input to stop
             Scanner scanner = new Scanner(System.in);
             try {
@@ -61,7 +60,7 @@ public class DemoProgram {
                 // Handle case when no input is available (e.g., when run via script)
                 System.out.println("🎮 Server running in background mode...");
                 System.out.println("🛑 To stop the server, press Ctrl+C");
-                
+
                 // Keep server running indefinitely when no input available
                 try {
                     Thread.currentThread().join();
@@ -69,14 +68,14 @@ public class DemoProgram {
                     Thread.currentThread().interrupt();
                 }
             }
-            
+
             System.out.println();
             System.out.println("🛑 Shutting down server...");
             server.close();
             serverThread.interrupt();
             System.out.println("✅ Server stopped successfully!");
             System.out.println("👋 Thanks for trying the Words Crush Game demo!");
-            
+
         } catch (Exception e) {
             System.err.println("❌ Failed to start game server: " + e.getMessage());
             System.err.println("🔍 Error details:");

@@ -1,5 +1,10 @@
 package game.commands.executors;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.util.ArrayList;
+import java.util.List;
 import org.academiadecodigo.wordsgame.entities.users.User;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
 import org.academiadecodigo.wordsgame.game.commands.executors.StartCommandExecutor;
@@ -11,17 +16,11 @@ import org.mockito.Mock;
 import org.mockito.MockedStatic;
 import org.mockito.MockitoAnnotations;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
-
 public class StartCommandExecutorTest {
 
     @Mock
     private User mockUser;
-    
+
     @Mock
     private List<User> mockUsersList;
 
@@ -42,10 +41,10 @@ public class StartCommandExecutorTest {
         void isApplicable_should_return_true_when_command_is_start() {
             // Given
             String startCommand = "/start";
-            
+
             // When
             boolean result = startCommandExecutor.isApplicable(startCommand);
-            
+
             // Then
             assertTrue(result);
         }
@@ -55,10 +54,10 @@ public class StartCommandExecutorTest {
         void isApplicable_should_return_false_when_command_is_not_start() {
             // Given
             String otherCommand = "/kick";
-            
+
             // When
             boolean result = startCommandExecutor.isApplicable(otherCommand);
-            
+
             // Then
             assertFalse(result);
         }
@@ -68,7 +67,7 @@ public class StartCommandExecutorTest {
         void isApplicable_should_throw_null_pointer_exception_when_command_is_null() {
             // Given
             String nullCommand = null;
-            
+
             // When & Then
             assertThrows(NullPointerException.class, () -> {
                 startCommandExecutor.isApplicable(nullCommand);
@@ -80,10 +79,10 @@ public class StartCommandExecutorTest {
         void isApplicable_should_return_false_when_command_is_empty() {
             // Given
             String emptyCommand = "";
-            
+
             // When
             boolean result = startCommandExecutor.isApplicable(emptyCommand);
-            
+
             // Then
             assertFalse(result);
         }
@@ -100,16 +99,17 @@ public class StartCommandExecutorTest {
             String startCommand = "/start";
             String expectedChatMessage = "Game is starting...";
             List<User> usersList = new ArrayList<>();
-            
-            try (MockedStatic<ChatCommandsMessagesTrafficManager> mockedTrafficManager = 
-                 mockStatic(ChatCommandsMessagesTrafficManager.class)) {
-                
-                mockedTrafficManager.when(ChatCommandsMessagesTrafficManager::commandStart)
-                    .thenReturn(expectedChatMessage);
-                
+
+            try (MockedStatic<ChatCommandsMessagesTrafficManager> mockedTrafficManager =
+                    mockStatic(ChatCommandsMessagesTrafficManager.class)) {
+
+                mockedTrafficManager
+                        .when(ChatCommandsMessagesTrafficManager::commandStart)
+                        .thenReturn(expectedChatMessage);
+
                 // When
                 String result = startCommandExecutor.execute(startCommand, mockUser, usersList);
-                
+
                 // Then
                 assertEquals(expectedChatMessage, result);
                 verify(mockUser).setReady(true);
@@ -124,16 +124,17 @@ public class StartCommandExecutorTest {
             String startCommand = "/start";
             String mockTrafficManagerResponse = "Mocked start response";
             List<User> usersList = new ArrayList<>();
-            
-            try (MockedStatic<ChatCommandsMessagesTrafficManager> mockedTrafficManager = 
-                 mockStatic(ChatCommandsMessagesTrafficManager.class)) {
-                
-                mockedTrafficManager.when(ChatCommandsMessagesTrafficManager::commandStart)
-                    .thenReturn(mockTrafficManagerResponse);
-                
+
+            try (MockedStatic<ChatCommandsMessagesTrafficManager> mockedTrafficManager =
+                    mockStatic(ChatCommandsMessagesTrafficManager.class)) {
+
+                mockedTrafficManager
+                        .when(ChatCommandsMessagesTrafficManager::commandStart)
+                        .thenReturn(mockTrafficManagerResponse);
+
                 // When
                 String result = startCommandExecutor.execute(startCommand, mockUser, usersList);
-                
+
                 // Then
                 assertEquals(mockTrafficManagerResponse, result);
                 verify(mockUser).setReady(true);

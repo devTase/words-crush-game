@@ -1,12 +1,11 @@
 package org.academiadecodigo.wordsgame.service;
 
-import org.academiadecodigo.wordsgame.database.Database;
-import org.academiadecodigo.wordsgame.entities.users.User;
-
 import jakarta.inject.Inject;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
+import org.academiadecodigo.wordsgame.database.Database;
+import org.academiadecodigo.wordsgame.entities.users.User;
 
 public class UserService {
     private final Database database;
@@ -26,9 +25,9 @@ public class UserService {
     }
 
     public void createNewUser() {
-        //CReate clientDispatch
+        // CReate clientDispatch
 
-        //Create User and send clientDispatch inside it
+        // Create User and send clientDispatch inside it
     }
 
     public void getUsers() {

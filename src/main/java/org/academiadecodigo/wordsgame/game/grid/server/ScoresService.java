@@ -1,9 +1,9 @@
 package org.academiadecodigo.wordsgame.game.grid.server;
 
-import org.academiadecodigo.wordsgame.game.ProjectProperties;
-import org.academiadecodigo.wordsgame.misc.Messages;
 import java.util.HashMap;
 import java.util.Map;
+import org.academiadecodigo.wordsgame.game.ProjectProperties;
+import org.academiadecodigo.wordsgame.misc.Messages;
 
 public class ScoresService {
 
@@ -17,10 +17,10 @@ public class ScoresService {
      * Get Scores from project properties
      * @return Integer[]
      */
-    public Integer[] getScoresFromProperties(){
+    public Integer[] getScoresFromProperties() {
         Integer[] scores = new Integer[6];
         for (int i = 0; i < scores.length; i++) {
-            scores[i] = Integer.parseInt(properties.getProperty("server.grid.score."+i));
+            scores[i] = Integer.parseInt(properties.getProperty("server.grid.score." + i));
         }
         return scores;
     }
@@ -33,8 +33,8 @@ public class ScoresService {
      */
     public int getNearestValue(int score, Integer[] y) {
         Integer count = 0;
-        for(Integer x : y) {
-            if(score - x < 0) return count;
+        for (Integer x : y) {
+            if (score - x < 0) return count;
             count = x;
         }
         return count;
@@ -45,7 +45,7 @@ public class ScoresService {
      * @param option
      * @return
      */
-    public String getScoreText(int option){
+    public String getScoreText(int option) {
 
         Map<Integer, String> map = new HashMap<>();
         for (int i = 0; i < 7; i++) {
@@ -53,5 +53,4 @@ public class ScoresService {
         }
         return map.get(option);
     }
-
 }

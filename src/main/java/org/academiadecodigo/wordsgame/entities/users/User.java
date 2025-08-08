@@ -24,7 +24,16 @@ public abstract class User implements Runnable {
     private boolean isReady;
     private boolean readRules;
 
-    public User(int id, String userName, int score, int lives, boolean isReady, ClientDispatch clientDispatch, Socket socket, Stage actualStage, Boolean readRules) {
+    public User(
+            int id,
+            String userName,
+            int score,
+            int lives,
+            boolean isReady,
+            ClientDispatch clientDispatch,
+            Socket socket,
+            Stage actualStage,
+            Boolean readRules) {
         this.id = id;
         this.userName = userName;
         this.score = score;
@@ -41,8 +50,7 @@ public abstract class User implements Runnable {
      */
     protected String getUserInput() {
         try {
-            return  new BufferedReader(new InputStreamReader
-                    (getSocket().getInputStream())).readLine();
+            return new BufferedReader(new InputStreamReader(getSocket().getInputStream())).readLine();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -78,9 +86,10 @@ public abstract class User implements Runnable {
      */
     protected void behaviourInFinishGame() {
         ChatCommandsMessagesTrafficManager.clearScreen(this);
-        if( ((FinishRoom) getActualStage()).getWinner() != null) {
-            if( ((FinishRoom) getActualStage()).getWinner().equals(this) ) {
-                getClientDispatch().notifyPlayer(String.format("CONGRATULATIONS! You are the Winner with %2d score!", getScore()));
+        if (((FinishRoom) getActualStage()).getWinner() != null) {
+            if (((FinishRoom) getActualStage()).getWinner().equals(this)) {
+                getClientDispatch()
+                        .notifyPlayer(String.format("CONGRATULATIONS! You are the Winner with %2d score!", getScore()));
                 ChatCommandsMessagesTrafficManager.sendMessageToAll(Messages.drawWinner(this.getUserName()));
                 return;
             }
@@ -110,15 +119,16 @@ public abstract class User implements Runnable {
      * Stage: Game Room
      */
     protected void behaviourInGameRoom() {
-        if(!isReadRules()) {
+        if (!isReadRules()) {
             ChatCommandsMessagesTrafficManager.clearScreen(this);
             getClientDispatch().sendRules();
             setReadRules(true);
         }
-        if(getLives() > 0) {
+        if (getLives() > 0) {
             ChatCommandsMessagesTrafficManager.clearScreen(this);
             getClientDispatch().notifyPlayer(getActualStage().getGrid().drawMatrix());
-            getClientDispatch().notifyPlayer(String.format(Messages.getMessage("SHOW_PLAYER_SCORES"), getScore(), getLives()));
+            getClientDispatch()
+                    .notifyPlayer(String.format(Messages.getMessage("SHOW_PLAYER_SCORES"), getScore(), getLives()));
             getActualStage().checkUserInput(this, getUserInput());
         } else {
             getActualStage().playerLost(this);

@@ -51,13 +51,13 @@ public class Prompt {
             for (int i = 0; i < options.length; i++) {
                 output.printf("%d - %s%n", i + 1, options[i]);
             }
-            
+
             try {
                 output.print("Choose an option: ");
                 output.flush();
                 String input = scanner.nextLine().trim();
                 int choice = Integer.parseInt(input);
-                
+
                 if (choice >= 1 && choice <= options.length) {
                     return choice;
                 }

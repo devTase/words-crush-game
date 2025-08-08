@@ -1,11 +1,11 @@
 package org.academiadecodigo.wordsgame.service;
-import org.academiadecodigo.wordsgame.database.Database;
-import org.academiadecodigo.wordsgame.entities.users.Role;
 
 import jakarta.inject.Inject;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import org.academiadecodigo.wordsgame.database.Database;
+import org.academiadecodigo.wordsgame.entities.users.Role;
 
 public class UserAuthenticator {
 

@@ -1,9 +1,9 @@
 package org.academiadecodigo.wordsgame.game.stages;
 
+import java.util.List;
 import org.academiadecodigo.wordsgame.entities.users.User;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
 import org.academiadecodigo.wordsgame.game.grid.game.Grid;
-import java.util.List;
 
 public class WaitingRoom extends Stage {
 
@@ -14,7 +14,7 @@ public class WaitingRoom extends Stage {
         super(grid, maxPlayers, usersInTheRoom);
     }
 
-    public static WaitingRoom getInstance(Grid grid, int maxPlayers, List<User> usersInTheRoom){
+    public static WaitingRoom getInstance(Grid grid, int maxPlayers, List<User> usersInTheRoom) {
         if (waitingRoom == null) {
             synchronized (WaitingRoom.class) {
                 if (waitingRoom == null) {
@@ -29,7 +29,7 @@ public class WaitingRoom extends Stage {
      * Check if all players are ready
      * @return boolean
      */
-    private boolean arePlayersReady(){
+    private boolean arePlayersReady() {
         return getUsersInTheRoom().size() > 0 && getUsersInTheRoom().stream().allMatch(User::isReady);
     }
 
@@ -44,7 +44,7 @@ public class WaitingRoom extends Stage {
             user.getClientDispatch().notifyPlayer(getCommandRunner().runCommand(message, user, getUsersInTheRoom()));
             return;
         }
-        synchronized(this) {
+        synchronized (this) {
             ChatCommandsMessagesTrafficManager.sendMessageToChat(user, message);
         }
     }
@@ -83,13 +83,13 @@ public class WaitingRoom extends Stage {
     @Override
     public void run() {
         isRunning = true;
-        
-        while(!arePlayersReady()) {}
+
+        while (!arePlayersReady()) {}
 
         Stage nextStage = ChangeStage.changeToGameRoomStage(this);
         Thread t = new Thread(nextStage);
         t.start();
-        
+
         isRunning = false;
     }
 }

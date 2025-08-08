@@ -1,11 +1,11 @@
 package org.academiadecodigo.wordsgame.game.commands.executors;
 
+import java.util.List;
 import org.academiadecodigo.wordsgame.entities.users.User;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
 import org.academiadecodigo.wordsgame.game.commands.executors.list.CommandsList;
-import java.util.List;
 
-public class StartCommandExecutor extends CommandExecutor{
+public class StartCommandExecutor extends CommandExecutor {
 
     public static final String START_COMMAND = CommandsList.START.getCommand();
 
@@ -19,7 +19,4 @@ public class StartCommandExecutor extends CommandExecutor{
         user.setReady(true);
         return ChatCommandsMessagesTrafficManager.commandStart();
     }
-
-
 }
-

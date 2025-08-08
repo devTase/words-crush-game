@@ -1,16 +1,15 @@
 package org.academiadecodigo.wordsgame.application.server;
 
-import org.academiadecodigo.wordsgame.config.ClientExecutorService;
-import org.academiadecodigo.wordsgame.config.GameConfiguration;
-import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
-import org.academiadecodigo.wordsgame.database.Database;
-import org.academiadecodigo.wordsgame.misc.Messages;
-
 import jakarta.inject.Inject;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.*;
+import org.academiadecodigo.wordsgame.config.ClientExecutorService;
+import org.academiadecodigo.wordsgame.config.GameConfiguration;
+import org.academiadecodigo.wordsgame.database.Database;
+import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
+import org.academiadecodigo.wordsgame.misc.Messages;
 
 public class GameServer {
 
@@ -22,20 +21,23 @@ public class GameServer {
     private ServerSocket serverSocket;
 
     @Inject
-    public GameServer(GameConfiguration config, 
-                     Database database,
-                     @ClientExecutorService ExecutorService clientExecutor,
-                     ClientDispatchFactory clientDispatchFactory) throws IOException {
+    public GameServer(
+            GameConfiguration config,
+            Database database,
+            @ClientExecutorService ExecutorService clientExecutor,
+            ClientDispatchFactory clientDispatchFactory)
+            throws IOException {
         this.config = config;
         this.database = database;
         this.clientExecutor = clientExecutor;
         this.clientDispatchFactory = clientDispatchFactory;
-        
+
         this.executorCompletionService = new ExecutorCompletionService<>(clientExecutor);
         this.serverSocket = new ServerSocket(config.getServerPort());
 
         ChatCommandsMessagesTrafficManager.sendMessageToServer(Messages.getMessage("INFO_SERVER_ON"));
-        ChatCommandsMessagesTrafficManager.sendMessageToServer(Messages.getMessage("INFO_PORT") + config.getServerPort());
+        ChatCommandsMessagesTrafficManager.sendMessageToServer(
+                Messages.getMessage("INFO_PORT") + config.getServerPort());
     }
 
     public void manageNewConnections() {
@@ -46,7 +48,8 @@ public class GameServer {
                 ClientDispatch clientDispatch = clientDispatchFactory.create(clientSocket);
                 executorCompletionService.submit(clientDispatch, null);
                 clientNumber++;
-                ChatCommandsMessagesTrafficManager.sendMessageToServer(Messages.getMessage("INFO_NEWCONNECTION") + clientNumber);
+                ChatCommandsMessagesTrafficManager.sendMessageToServer(
+                        Messages.getMessage("INFO_NEWCONNECTION") + clientNumber);
             } catch (IOException e) {
                 e.printStackTrace();
             }

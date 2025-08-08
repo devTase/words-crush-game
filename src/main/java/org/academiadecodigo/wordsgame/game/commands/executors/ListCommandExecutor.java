@@ -1,13 +1,12 @@
 package org.academiadecodigo.wordsgame.game.commands.executors;
 
+import java.util.List;
 import org.academiadecodigo.wordsgame.entities.users.User;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
 import org.academiadecodigo.wordsgame.game.commands.executors.list.CommandsList;
 import org.academiadecodigo.wordsgame.misc.Messages;
 
-import java.util.List;
-
-public class ListCommandExecutor extends CommandExecutor{
+public class ListCommandExecutor extends CommandExecutor {
 
     public static final String LIST_COMMAND = CommandsList.LIST.getCommand();
 
@@ -23,9 +22,12 @@ public class ListCommandExecutor extends CommandExecutor{
         sb.append(Messages.getMessage("INFO_LIST_PLAYERS"));
 
         for (int i = 0; i < usersList.size(); i++) {
-            sb.append(String.format("> %s (%s)\n", usersList.get(i).getUserName(), usersList.get(i).isReady()));
+            sb.append(String.format(
+                    "> %s (%s)\n",
+                    usersList.get(i).getUserName(), usersList.get(i).isReady()));
         }
-        ChatCommandsMessagesTrafficManager.sendMessageToServer(String.format(Messages.getMessage("INFO_SOMEONE_IS_WATCHING_LIST"), user.getUserName()));
+        ChatCommandsMessagesTrafficManager.sendMessageToServer(
+                String.format(Messages.getMessage("INFO_SOMEONE_IS_WATCHING_LIST"), user.getUserName()));
 
         return sb.toString();
     }

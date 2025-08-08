@@ -1,22 +1,111 @@
 package game.grid.game;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.academiadecodigo.wordsgame.game.grid.game.BackupGrid;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class BackupGridTest {
 
     @Test
     public void testSetWordsForMatrixBackup2() {
         String[][] expected = {
-                {"teste     ", "ola       ", "witness   ", "acid      ", "location  ", "wake      ", "X-ray     ", "export    ", "indirect  ", "peanut    "},
-                {"owl       ", "campaign  ", "bulb      ", "quantity  ", "introduce ", "coalition ", "sink      ", "magazine  ", "feature   ", "slice     "},
-                {"industry  ", "purpose   ", "knife     ", "immune    ", "product   ", "sum       ", "unrest    ", "promise   ", "allow     ", "gesture   "},
-                {"exploit   ", "delete    ", "bark      ", "reactor   ", "electron  ", "missile   ", "damn      ", "witness   ", "acid      ", "location  "},
-                {"wake      ", "X-ray     ", "export    ", "indirect  ", "peanut    ", "owl       ", "campaign  ", "bulb      ", "quantity  ", "introduce "},
-                {"coalition ", "sink      ", "magazine  ", "feature   ", "slice     ", "industry  ", "purpose   ", "reactor   ", "electron  ", "seminar   "},
-                {"grace     ", "hand      ", "episode   ", "laborer   ", "ideal     ", "equinox   ", "affinity  ", "herb      ", "oil       ", "winter    "},
-                {"embryo    ", "vision    ", "incident  ", "pound     ", "excess    ", "          ", "          ", "          ", "          ", "          "}
+            {
+                "teste     ",
+                "ola       ",
+                "witness   ",
+                "acid      ",
+                "location  ",
+                "wake      ",
+                "X-ray     ",
+                "export    ",
+                "indirect  ",
+                "peanut    "
+            },
+            {
+                "owl       ",
+                "campaign  ",
+                "bulb      ",
+                "quantity  ",
+                "introduce ",
+                "coalition ",
+                "sink      ",
+                "magazine  ",
+                "feature   ",
+                "slice     "
+            },
+            {
+                "industry  ",
+                "purpose   ",
+                "knife     ",
+                "immune    ",
+                "product   ",
+                "sum       ",
+                "unrest    ",
+                "promise   ",
+                "allow     ",
+                "gesture   "
+            },
+            {
+                "exploit   ",
+                "delete    ",
+                "bark      ",
+                "reactor   ",
+                "electron  ",
+                "missile   ",
+                "damn      ",
+                "witness   ",
+                "acid      ",
+                "location  "
+            },
+            {
+                "wake      ",
+                "X-ray     ",
+                "export    ",
+                "indirect  ",
+                "peanut    ",
+                "owl       ",
+                "campaign  ",
+                "bulb      ",
+                "quantity  ",
+                "introduce "
+            },
+            {
+                "coalition ",
+                "sink      ",
+                "magazine  ",
+                "feature   ",
+                "slice     ",
+                "industry  ",
+                "purpose   ",
+                "reactor   ",
+                "electron  ",
+                "seminar   "
+            },
+            {
+                "grace     ",
+                "hand      ",
+                "episode   ",
+                "laborer   ",
+                "ideal     ",
+                "equinox   ",
+                "affinity  ",
+                "herb      ",
+                "oil       ",
+                "winter    "
+            },
+            {
+                "embryo    ",
+                "vision    ",
+                "incident  ",
+                "pound     ",
+                "excess    ",
+                "          ",
+                "          ",
+                "          ",
+                "          ",
+                "          "
+            }
         };
         String[][] actual = BackupGrid.setWordsForMatrixBackup();
         assertEquals(expected.length, actual.length);
@@ -41,5 +130,4 @@ public class BackupGridTest {
             }
         }
     }
-
 }

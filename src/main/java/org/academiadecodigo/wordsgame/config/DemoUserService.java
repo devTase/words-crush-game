@@ -1,10 +1,10 @@
 package org.academiadecodigo.wordsgame.config;
 
-import org.academiadecodigo.wordsgame.entities.users.User;
-import org.academiadecodigo.wordsgame.service.UserService;
 import jakarta.inject.Inject;
 import java.sql.SQLException;
 import java.util.Map;
+import org.academiadecodigo.wordsgame.entities.users.User;
+import org.academiadecodigo.wordsgame.service.UserService;
 
 public class DemoUserService extends UserService {
 
@@ -34,7 +34,8 @@ public class DemoUserService extends UserService {
 
     @Override
     public void saveUser(User user) {
-        System.out.println("🎮 Demo: Saving user: " + (user != null ? user.getClass().getSimpleName() : "null"));
+        System.out.println(
+                "🎮 Demo: Saving user: " + (user != null ? user.getClass().getSimpleName() : "null"));
     }
 
     @Override
