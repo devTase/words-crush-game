@@ -1,0 +1,18 @@
+#!/bin/sh
+#
+# A pre-commit hook to run spotless verification
+echo "Running git pre-commit hook..."
+
+echo "Running 'mvn spotless:check'..."
+mvn spotless:check
+
+if [ $? -ne 0 ]; then
+  echo "✗ Spotless check failed."
+  echo "→ Commit aborted."
+  echo "→ Fixing formatting issues."
+  mvn spotless:apply
+  echo "→ Fixed all formating issues. Reapply commit."
+  exit 1
+else
+  echo "✓ Spotless check passed."
+fi

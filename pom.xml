@@ -15,6 +15,7 @@
         <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
         <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
         <sonar.language>java</sonar.language>
+        <spotless.version>2.43.0</spotless.version>
     </properties>
 
     <groupId>groupId</groupId>
@@ -80,21 +81,40 @@
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
-                <version>2.43.0</version>
-                <configuration>
-                    <java>
-                        <googleJavaFormat/>
-                    </java>
-                </configuration>
+                <version>${spotless.version}</version>
                 <executions>
                     <execution>
-                        <id>spotless-check</id>
-                        <phase>verify</phase>
+                        <id>check</id>
                         <goals>
                             <goal>check</goal>
                         </goals>
                     </execution>
+                    <execution>
+                        <id>apply</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>apply</goal>
+                        </goals>
+                    </execution>
                 </executions>
+                <configuration>
+                    <java>
+                        <includes>
+                            <include>src/main/java/**/*.java</include>
+                            <include>src/test/java/**/*.java</include>
+                        </includes>
+                        <palantirJavaFormat>
+                            <version>2.39.0</version>
+                            <style>PALANTIR</style>
+                            <formatJavadoc>false</formatJavadoc>
+                        </palantirJavaFormat>
+                        <importOrder />
+                        <removeUnusedImports />
+                        <formatAnnotations />
+                        <endWithNewline />
+                    </java>
+                    <lineEndings>UNIX</lineEndings>
+                </configuration>
             </plugin>
             <!-- Maven PMD Plugin for Static Analysis -->
             <plugin>
