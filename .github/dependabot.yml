@@ -1,7 +1,65 @@
 version: 2
 updates:
+  # Maven dependencies
   - package-ecosystem: "maven"
     directory: "/"
     schedule:
       interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Lisbon"
     open-pull-requests-limit: 10
+    reviewers:
+      - "devTase"
+    assignees:
+      - "devTase"
+    commit-message:
+      prefix: "deps"
+      include: "scope"
+    labels:
+      - "dependencies"
+      - "java"
+    # Group updates by dependency type
+    groups:
+      junit:
+        patterns:
+          - "org.junit*"
+          - "junit*"
+      mockito:
+        patterns:
+          - "org.mockito*"
+      guice:
+        patterns:
+          - "com.google.inject*"
+      database:
+        patterns:
+          - "mysql*"
+          - "com.h2database*"
+      build-tools:
+        patterns:
+          - "org.jacoco*"
+          - "com.diffplug.spotless*"
+          - "org.apache.maven.plugins*"
+    # Allow automatic merging for patch updates
+    allow:
+      - dependency-type: "direct:production"
+      - dependency-type: "direct:development"
+    # Ignore certain dependencies that need manual review
+    ignore:
+      - dependency-name: "mysql:mysql-connector-java"
+        versions: ["9.x"]
+        update-types: ["version-update:semver-major"]
+
+  # GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "09:00"
+      timezone: "Europe/Lisbon"
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "dependencies"
+      - "github-actions"
