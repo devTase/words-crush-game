@@ -1,9 +1,9 @@
 package org.academiadecodigo.wordsgame.application.server;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.academiadecodigo.bootcamp.Prompt;
+import org.academiadecodigo.wordsgame.prompt.Prompt;
 import org.academiadecodigo.wordsgame.entities.users.*;
+import org.academiadecodigo.wordsgame.service.UserAuthenticator;
+import org.academiadecodigo.wordsgame.config.GameConfiguration;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
 import org.academiadecodigo.wordsgame.game.PromptMenu;
 import org.academiadecodigo.wordsgame.game.grid.game.Grid;
@@ -18,8 +18,6 @@ import java.util.LinkedList;
 import java.util.Optional;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-@Getter
-@Setter
 public class ClientDispatch implements Runnable {
 
     private int id;
@@ -30,13 +28,17 @@ public class ClientDispatch implements Runnable {
     private UserManager um;
     private Boolean isPlayerNotReading = false;
     private LinkedList<String> bufferedMessages;
+    private final UserAuthenticator userAuthenticator;
+    private final GameConfiguration gameConfiguration;
 
     private ChatCommandsMessagesTrafficManager chat;
     private Socket socket;
     private PrintWriter outStream;
 
-    public ClientDispatch(Socket socket, String filePath) {
+    public ClientDispatch(Socket socket, String filePath, UserAuthenticator userAuthenticator, GameConfiguration gameConfiguration) {
         this.socket = socket;
+        this.userAuthenticator = userAuthenticator;
+        this.gameConfiguration = gameConfiguration;
         this.promptMenu = new PromptMenu<>();
         
         try {
@@ -62,7 +64,7 @@ public class ClientDispatch implements Runnable {
      */
     private void setupUser()  {
 
-        this.um = new UserManager(this.outStream, this.prompt);
+        this.um = new UserManager(this.outStream, this.prompt, this.userAuthenticator);
 
         int connectionType = promptMenu.createNewMenu(new String[]{"Register", "Login"}, "Select", prompt);
         if(connectionType == 1) {
@@ -85,7 +87,7 @@ public class ClientDispatch implements Runnable {
         registerInWaitingRoom(user);
         registerInChatManagerClass(user);
 
-        if(actualStage.getUsersInTheRoom().size() == GameServer.MAX_CLIENTS) createAndStartNewThread(actualStage);
+        if(actualStage.getUsersInTheRoom().size() == gameConfiguration.getMaxClients()) createAndStartNewThread(actualStage);
 
         createAndStartNewThread(user);
         welcomeMessageNotifications(user);
@@ -144,7 +146,7 @@ public class ClientDispatch implements Runnable {
      * Starts the thread after users are created
      */
     private Stage createInstanceOfStage(String filePath) {
-        return WaitingRoom.getInstance(new Grid(filePath), GameServer.MAX_CLIENTS, new CopyOnWriteArrayList<>());
+        return WaitingRoom.getInstance(new Grid(filePath), gameConfiguration.getMaxClients(), new CopyOnWriteArrayList<>());
     }
 
     /**
@@ -202,5 +204,26 @@ public class ClientDispatch implements Runnable {
     public void setIsPlayerNotReading(Boolean state) {
         this.isPlayerNotReading = state;
         if(!state) this.sendBufferedMessagesToPlayer();
+    }
+
+    // Getters and Setters
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public PrintWriter getOutStream() {
+        return outStream;
+    }
+
+    public Boolean getIsPlayerNotReading() {
+        return isPlayerNotReading;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

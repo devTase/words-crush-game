@@ -1,6 +1,6 @@
 package org.academiadecodigo.wordsgame.game;
 
-import org.academiadecodigo.bootcamp.Prompt;
+import org.academiadecodigo.wordsgame.prompt.Prompt;
 import org.academiadecodigo.wordsgame.entities.users.Player;
 import org.academiadecodigo.wordsgame.entities.users.User;
 import org.academiadecodigo.wordsgame.game.commands.executors.list.CommandsList;

@@ -1,7 +1,5 @@
 package org.academiadecodigo.wordsgame.entities.users;
 
-import lombok.Getter;
-import lombok.Setter;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -14,8 +12,6 @@ import org.academiadecodigo.wordsgame.game.stages.Stage;
 import org.academiadecodigo.wordsgame.game.stages.WaitingRoom;
 import org.academiadecodigo.wordsgame.misc.Messages;
 
-@Getter
-@Setter
 public abstract class User implements Runnable {
 
     private int id;
@@ -129,4 +125,76 @@ public abstract class User implements Runnable {
         }
     }
 
+    // Getters and Setters
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public ClientDispatch getClientDispatch() {
+        return clientDispatch;
+    }
+
+    public void setClientDispatch(ClientDispatch clientDispatch) {
+        this.clientDispatch = clientDispatch;
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
+
+    public Stage getActualStage() {
+        return actualStage;
+    }
+
+    public void setActualStage(Stage actualStage) {
+        this.actualStage = actualStage;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+
+    public boolean isReady() {
+        return isReady;
+    }
+
+    public void setReady(boolean ready) {
+        isReady = ready;
+    }
+
+    public boolean isReadRules() {
+        return readRules;
+    }
+
+    public void setReadRules(boolean readRules) {
+        this.readRules = readRules;
+    }
 }

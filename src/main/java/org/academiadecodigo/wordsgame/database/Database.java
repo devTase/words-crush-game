@@ -1,7 +1,5 @@
 package org.academiadecodigo.wordsgame.database;
 
-import lombok.Getter;
-import lombok.Setter;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -16,38 +14,16 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 import org.academiadecodigo.wordsgame.entities.database.*;
 
-@Getter
-@Setter
 public class Database {
 
-    private static volatile Database instance;
     private Properties props;
     private Connection connection;
     private String env;
     private DatabaseEnvData dataBaseData;
 
-    private Database() {
+    public Database() {
         this.props = new Properties();
         env = ResourceBundle.getBundle("application").getString("env");
-    }
-
-    /**
-     * Returns the single instance of the Database class, creating it if necessary.
-     * This method uses double-checked locking to ensure that only one instance of
-     * the class is created in a multiThreaded environment.
-     *
-     * @return the single instance of the Database class
-     * @throws SQLException if an error occurs while creating the database connection
-     */
-    public static Database getInstance() throws SQLException {
-        if (instance == null) {
-            synchronized (Database.class) {
-                if (instance == null) {
-                    instance = new Database();
-                }
-            }
-        }
-        return instance;
     }
 
     /**
@@ -212,12 +188,42 @@ public class Database {
     }
 
     /**
-     * Deletes current instance of DataBase
+     * Closes the database connection.
      */
-    public void closeInstance() {
+    public void closeConnection() {
         close();
-        instance = null;
     }
 
+    // Getters and Setters
+    public Properties getProps() {
+        return props;
+    }
 
+    public void setProps(Properties props) {
+        this.props = props;
+    }
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
+    public String getEnv() {
+        return env;
+    }
+
+    public void setEnv(String env) {
+        this.env = env;
+    }
+
+    public DatabaseEnvData getDataBaseData() {
+        return dataBaseData;
+    }
+
+    public void setDataBaseData(DatabaseEnvData dataBaseData) {
+        this.dataBaseData = dataBaseData;
+    }
 }

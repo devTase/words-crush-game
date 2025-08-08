@@ -1,6 +1,6 @@
 package org.academiadecodigo.wordsgame.game.commands.executors;
 
-import org.academiadecodigo.bootcamp.scanners.string.StringInputScanner;
+import org.academiadecodigo.wordsgame.prompt.scanners.StringInputScanner;
 import org.academiadecodigo.wordsgame.entities.users.User;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
 import org.academiadecodigo.wordsgame.game.PromptMenu;
@@ -27,19 +27,21 @@ public class PmCommandExecutor extends CommandExecutor{
         if(usersList.size() == 1) {
             return Messages.getMessage("ERROR_NOT_ENOUGH_PLAYERS_IN_ROOM");
         }
-        String[] strArray = new String[removeUserFromList(user, usersList).size()];
-        StringInputScanner personalMessage = new StringInputScanner();
+        List<User> availableUsers = removeUserFromList(user, usersList);
+        String[] strArray = new String[availableUsers.size()];
 
-        for (int i = 0; i < removeUserFromList(user, usersList).size(); i++) {
-            strArray[i] = removeUserFromList(user, usersList).get(i).getUserName();
+        for (int i = 0; i < availableUsers.size(); i++) {
+            strArray[i] = availableUsers.get(i).getUserName();
         }
 
-        User userDestiny = removeUserFromList(user, usersList)
+        User userDestiny = availableUsers
                 .get(new PromptMenu<Integer>().createNewMenu(strArray, Messages.getMessage("INFO_USERS_AVAILABLE"), ChatCommandsMessagesTrafficManager.getUserPrompt(user))-1);
 
-        personalMessage.setMessage(Messages.getMessage("SEND_MESSAGE_TO_PLAYER"));
+        StringInputScanner personalMessage = new StringInputScanner(Messages.getMessage("SEND_MESSAGE_TO_PLAYER"));
+        String messageContent = personalMessage.promptString(ChatCommandsMessagesTrafficManager.getUserPrompt(user));
+        
         ChatCommandsMessagesTrafficManager.sendMessageToServer(String.format(Messages.getMessage("PLAYER_SENT_PM_TO_OTHER"), user.getUserName(), userDestiny.getUserName(), Colors.PURPLE_BOLD_BRIGHT, Colors.RESET));
-        userDestiny.getClientDispatch().notifyPlayer(String.format(Messages.getMessage("PLAYER_MESSAGE_FOR_PM"), user.getUserName(), ChatCommandsMessagesTrafficManager.getUserPrompt(user).getUserInput(personalMessage)));
+        userDestiny.getClientDispatch().notifyPlayer(String.format(Messages.getMessage("PLAYER_MESSAGE_FOR_PM"), user.getUserName(), messageContent));
         
         return ChatCommandsMessagesTrafficManager.sendPrivateMessageToUser();
     }

@@ -1,8 +1,5 @@
 package org.academiadecodigo.wordsgame.entities.database;
 
-import lombok.Getter;
-
-@Getter
 public enum QueryType {
     QUERY_DB("query-db"),
     QUERY_USERS("query-users"),
@@ -12,5 +9,9 @@ public enum QueryType {
 
     QueryType(String param) {
         this.param = param;
+    }
+
+    public String getParam() {
+        return param;
     }
 }

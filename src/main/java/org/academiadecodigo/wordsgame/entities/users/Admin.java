@@ -1,13 +1,12 @@
 package org.academiadecodigo.wordsgame.entities.users;
 
-import lombok.Getter;
-import lombok.Setter;
-import org.academiadecodigo.wordsgame.game.stages.Stage;
 import org.academiadecodigo.wordsgame.application.server.ClientDispatch;
-import java.net.Socket;
+import org.academiadecodigo.wordsgame.game.stages.Stage;
+import org.academiadecodigo.wordsgame.game.stages.WaitingRoom;
+import org.academiadecodigo.wordsgame.game.stages.GameRoom;
+import org.academiadecodigo.wordsgame.game.stages.FinishRoom;
 
-@Getter
-@Setter
+import java.net.Socket;
 public class Admin extends User implements Runnable {
 
     public Admin(int id, String userName, int score, int lives, boolean isReady, ClientDispatch clientDispatch, Socket socket, Stage actualStage, Boolean isReadyConfirmed) {

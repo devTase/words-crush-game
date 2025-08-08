@@ -1,10 +1,7 @@
 package org.academiadecodigo.wordsgame.game.grid.server;
 
-import lombok.Getter;
-
 import java.util.List;
 
-@Getter
 public enum ScoresLevelType  {
 
     LEVEL0(0),
@@ -19,6 +16,10 @@ public enum ScoresLevelType  {
 
     ScoresLevelType(Integer score) {
         this.score = score;
+    }
+
+    public Integer getScore() {
+        return score;
     }
 
     public static List<ScoresLevelType> getEnumAsStream() {

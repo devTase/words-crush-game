@@ -1,8 +1,5 @@
 package org.academiadecodigo.wordsgame.game.commands.executors.list;
 
-import lombok.Getter;
-
-@Getter
 public enum CommandsList {
 
     PM("/pm"),
@@ -17,5 +14,9 @@ public enum CommandsList {
 
     CommandsList(String command) {
         this.command = command;
+    }
+
+    public String getCommand() {
+        return command;
     }
 }

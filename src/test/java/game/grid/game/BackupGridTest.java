@@ -1,8 +1,8 @@
 package game.grid.game;
 
 import org.academiadecodigo.wordsgame.game.grid.game.BackupGrid;
-import org.junit.Test;
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BackupGridTest {
 
