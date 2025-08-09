@@ -17,6 +17,11 @@ public class Client extends JFrame implements ActionListener {
     private JTextPane chatArea;
     private JLabel statusLabel;
     private JLabel connectionLabel;
+    private JPanel playersPanel;
+    private JScrollPane playersScrollPane;
+    private DefaultListModel<PlayerInfo> playersListModel;
+    private JList<PlayerInfo> playersList;
+    private JLabel playersCountLabel;
     private BufferedReader in;
     private PrintWriter out;
     private boolean isConnected = false;
@@ -75,6 +80,72 @@ public class Client extends JFrame implements ActionListener {
         connectionLabel = new JLabel("🔴 Disconnected");
         connectionLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
         connectionLabel.setForeground(DANGER_COLOR);
+
+        // Players panel components
+        initializePlayersPanel();
+    }
+
+    private void initializePlayersPanel() {
+        // Players count label
+        playersCountLabel = new JLabel("👥 Players (0)");
+        playersCountLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 12));
+        playersCountLabel.setForeground(SECONDARY_COLOR);
+
+        // Players list model and list
+        playersListModel = new DefaultListModel<>();
+        playersList = new JList<>(playersListModel);
+        playersList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        playersList.setBackground(CHAT_BACKGROUND);
+        playersList.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        playersList.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 12));
+
+        // Custom cell renderer for better visual appearance
+        playersList.setCellRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(
+                    JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+                super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+
+                if (value instanceof PlayerInfo) {
+                    PlayerInfo player = (PlayerInfo) value;
+                    setText(player.toString());
+
+                    // Different colors for ready/not ready players
+                    if (!isSelected) {
+                        if (player.isReady()) {
+                            setBackground(new Color(240, 255, 240)); // Light green
+                        } else {
+                            setBackground(new Color(255, 248, 240)); // Light orange
+                        }
+                    }
+                }
+                return this;
+            }
+        });
+
+        // Players panel
+        playersPanel = new JPanel(new BorderLayout());
+        playersPanel.setBackground(BACKGROUND_COLOR);
+        playersPanel.setBorder(BorderFactory.createTitledBorder(
+                BorderFactory.createLineBorder(BORDER_COLOR),
+                "👥 Players in Room",
+                TitledBorder.LEFT,
+                TitledBorder.TOP,
+                new Font(Font.SANS_SERIF, Font.BOLD, 12),
+                SECONDARY_COLOR));
+        playersPanel.setPreferredSize(new Dimension(250, 0));
+
+        // Add components to players panel
+        JPanel headerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        headerPanel.setBackground(BACKGROUND_COLOR);
+        headerPanel.add(playersCountLabel);
+        playersPanel.add(headerPanel, BorderLayout.NORTH);
+
+        // Players list with scroll
+        playersScrollPane = new JScrollPane(playersList);
+        playersScrollPane.setBorder(BorderFactory.createEmptyBorder());
+        playersScrollPane.setBackground(CHAT_BACKGROUND);
+        playersPanel.add(playersScrollPane, BorderLayout.CENTER);
     }
 
     private JButton createStyledButton(String text, Color bgColor) {
@@ -143,9 +214,14 @@ public class Client extends JFrame implements ActionListener {
 
         bottomPanel.add(inputPanel, BorderLayout.CENTER);
 
+        // Create main content panel with chat and players
+        JPanel mainContentPanel = new JPanel(new BorderLayout());
+        mainContentPanel.add(chatScrollPane, BorderLayout.CENTER);
+        mainContentPanel.add(playersPanel, BorderLayout.EAST);
+
         // Add all panels to main frame
         add(topPanel, BorderLayout.NORTH);
-        add(chatScrollPane, BorderLayout.CENTER);
+        add(mainContentPanel, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
     }
 
@@ -186,7 +262,11 @@ public class Client extends JFrame implements ActionListener {
 
             appendToChat("🎮 Welcome to Words Crush Game!", "SYSTEM", SUCCESS_COLOR);
             appendToChat("💡 Type your message and press Enter or click Send", "SYSTEM", SECONDARY_COLOR);
-            appendToChat("🎯 Available commands: /help, /list, /pm [user] [message]", "SYSTEM", SECONDARY_COLOR);
+            appendToChat(
+                    "🎯 Available commands: /help, /list, /ready, /pm [user] [message]", "SYSTEM", SECONDARY_COLOR);
+
+            // Add demo players for testing (will be replaced by real server data)
+            addTestPlayers();
 
             // Start input thread
             startInputThread();
@@ -222,7 +302,10 @@ public class Client extends JFrame implements ActionListener {
 
     private void processServerMessage(String message) {
         // Enhanced message processing
-        if (message.startsWith("[SERVER]:")) {
+        if (message.startsWith("[PLAYERS_UPDATE]:")) {
+            // Handle players list update
+            updatePlayersList(message.substring(17).trim());
+        } else if (message.startsWith("[SERVER]:")) {
             appendToChat(message.substring(9).trim(), "SERVER", PRIMARY_COLOR);
         } else if (message.startsWith("[ADMIN]")) {
             appendToChat(message, "ADMIN", new Color(138, 43, 226));
@@ -240,6 +323,57 @@ public class Client extends JFrame implements ActionListener {
                 chatArea.setCaretPosition(chatArea.getDocument().getLength());
             } catch (Exception ignored) {
             }
+        });
+    }
+
+    /**
+     * Updates the players list based on server message
+     * Format: "playerName1:ready:admin|playerName2:notready:player|..."
+     */
+    private void updatePlayersList(String playersData) {
+        SwingUtilities.invokeLater(() -> {
+            playersListModel.clear();
+
+            if (playersData.trim().isEmpty()) {
+                updatePlayersCount(0);
+                return;
+            }
+
+            String[] players = playersData.split("\\|");
+            for (String playerData : players) {
+                String[] parts = playerData.split(":");
+                if (parts.length >= 3) {
+                    String name = parts[0];
+                    boolean isReady = "ready".equalsIgnoreCase(parts[1]);
+                    boolean isAdmin = "admin".equalsIgnoreCase(parts[2]);
+
+                    PlayerInfo playerInfo = new PlayerInfo(name, isReady, isAdmin);
+                    playersListModel.addElement(playerInfo);
+                }
+            }
+
+            updatePlayersCount(playersListModel.getSize());
+        });
+    }
+
+    /**
+     * Updates the players count label
+     */
+    private void updatePlayersCount(int count) {
+        SwingUtilities.invokeLater(() -> {
+            playersCountLabel.setText(String.format("👥 Players (%d)", count));
+        });
+    }
+
+    /**
+     * Adds a test player for demonstration (can be removed later)
+     */
+    private void addTestPlayers() {
+        SwingUtilities.invokeLater(() -> {
+            playersListModel.addElement(new PlayerInfo("Admin", true, true));
+            playersListModel.addElement(new PlayerInfo("Player1", true, false));
+            playersListModel.addElement(new PlayerInfo("Player2", false, false));
+            updatePlayersCount(playersListModel.getSize());
         });
     }
 

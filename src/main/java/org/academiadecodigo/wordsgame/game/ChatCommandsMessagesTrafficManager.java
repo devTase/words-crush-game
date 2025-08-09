@@ -139,9 +139,10 @@ public class ChatCommandsMessagesTrafficManager {
      * Kick a Selected Player.
      * Creates a list with available players.
      * @param originUser
+     * @param currentUserList
      * @return String
      */
-    public static String commandKick(User originUser) {
+    public static String commandKick(User originUser, List<User> currentUserList) {
         String[] strArray = new String[removeUserFromList(originUser).size()];
 
         for (int i = 0; i < removeUserFromList(originUser).size(); i++) {
@@ -163,7 +164,13 @@ public class ChatCommandsMessagesTrafficManager {
                 .notifyPlayer(String.format(Messages.getMessage("PLAYER_MESSAGE_FOR_KICK"), kickReason));
         sendMessageToServer(
                 String.format(Messages.getMessage("INFO_PLAYER_KICKED"), userDestiny.getUserName(), kickReason));
-        if (userDestiny instanceof Player) ((Player) userDestiny).kick();
+        if (userDestiny instanceof Player) {
+            ((Player) userDestiny).kick();
+            // Remove from the stage user list
+            currentUserList.remove(userDestiny);
+            // Broadcast updated players list
+            PlayersUpdateBroadcaster.broadcastPlayersUpdate(currentUserList);
+        }
 
         return Messages.getMessage("YOU_KICKED_A_PLAYER");
     }

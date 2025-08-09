@@ -4,6 +4,7 @@ import java.util.List;
 import org.academiadecodigo.wordsgame.entities.users.Admin;
 import org.academiadecodigo.wordsgame.entities.users.User;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
+import org.academiadecodigo.wordsgame.game.PlayersUpdateBroadcaster;
 import org.academiadecodigo.wordsgame.game.commands.executors.list.CommandsList;
 import org.academiadecodigo.wordsgame.game.stages.WaitingRoom;
 import org.academiadecodigo.wordsgame.misc.Messages;
@@ -31,6 +32,9 @@ public class StartAllCommandExecutor extends CommandExecutor {
      */
     private String setAllPlayersReady(List<User> userList) {
         userList.forEach(user -> user.setReady(true));
+
+        // Broadcast updated players list to all users
+        PlayersUpdateBroadcaster.broadcastPlayersUpdate(userList);
 
         // Force start the waiting room thread if not already running
         // This allows admin to start the game even without max players

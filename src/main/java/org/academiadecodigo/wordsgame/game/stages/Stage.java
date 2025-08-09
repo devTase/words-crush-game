@@ -23,6 +23,7 @@ public abstract class Stage implements StageInterface {
                 new ListCommandExecutor(),
                 new PmCommandExecutor(),
                 new StartCommandExecutor(),
+                new ReadyCommandExecutor(),
                 new StartAllCommandExecutor(),
                 new HelpCommandExecutor()));
     }

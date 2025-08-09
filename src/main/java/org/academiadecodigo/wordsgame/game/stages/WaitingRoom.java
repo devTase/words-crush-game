@@ -3,6 +3,7 @@ package org.academiadecodigo.wordsgame.game.stages;
 import java.util.List;
 import org.academiadecodigo.wordsgame.entities.users.User;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
+import org.academiadecodigo.wordsgame.game.PlayersUpdateBroadcaster;
 import org.academiadecodigo.wordsgame.game.grid.game.Grid;
 
 public class WaitingRoom extends Stage {
@@ -55,6 +56,8 @@ public class WaitingRoom extends Stage {
      */
     public void registerUserInStage(User user) {
         this.getUsersInTheRoom().add(user);
+        // Broadcast updated players list
+        PlayersUpdateBroadcaster.broadcastPlayersUpdate(getUsersInTheRoom());
     }
 
     /**

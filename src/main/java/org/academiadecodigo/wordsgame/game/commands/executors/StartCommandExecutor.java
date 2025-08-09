@@ -3,6 +3,7 @@ package org.academiadecodigo.wordsgame.game.commands.executors;
 import java.util.List;
 import org.academiadecodigo.wordsgame.entities.users.User;
 import org.academiadecodigo.wordsgame.game.ChatCommandsMessagesTrafficManager;
+import org.academiadecodigo.wordsgame.game.PlayersUpdateBroadcaster;
 import org.academiadecodigo.wordsgame.game.commands.executors.list.CommandsList;
 
 public class StartCommandExecutor extends CommandExecutor {
@@ -17,6 +18,10 @@ public class StartCommandExecutor extends CommandExecutor {
     @Override
     protected String executeValidCommand(String command, User user, List<User> userList) {
         user.setReady(true);
+
+        // Broadcast updated players list to all users
+        PlayersUpdateBroadcaster.broadcastPlayersUpdate(userList);
+
         return ChatCommandsMessagesTrafficManager.commandStart();
     }
 }
