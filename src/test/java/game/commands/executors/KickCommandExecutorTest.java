@@ -110,7 +110,7 @@ public class KickCommandExecutorTest {
                     mockStatic(ChatCommandsMessagesTrafficManager.class)) {
 
                 mockedTrafficManager
-                        .when(() -> ChatCommandsMessagesTrafficManager.commandKick(mockAdmin))
+                        .when(() -> ChatCommandsMessagesTrafficManager.commandKick(mockAdmin, usersList))
                         .thenReturn(expectedChatMessage);
 
                 // When
@@ -118,7 +118,7 @@ public class KickCommandExecutorTest {
 
                 // Then
                 assertEquals(expectedChatMessage, result);
-                mockedTrafficManager.verify(() -> ChatCommandsMessagesTrafficManager.commandKick(mockAdmin));
+                mockedTrafficManager.verify(() -> ChatCommandsMessagesTrafficManager.commandKick(mockAdmin, usersList));
             }
         }
 
@@ -156,7 +156,7 @@ public class KickCommandExecutorTest {
                     mockStatic(ChatCommandsMessagesTrafficManager.class)) {
 
                 mockedTrafficManager
-                        .when(() -> ChatCommandsMessagesTrafficManager.commandKick(mockAdmin))
+                        .when(() -> ChatCommandsMessagesTrafficManager.commandKick(mockAdmin, usersList))
                         .thenReturn(mockTrafficManagerResponse);
 
                 // When
@@ -164,7 +164,8 @@ public class KickCommandExecutorTest {
 
                 // Then
                 assertEquals(mockTrafficManagerResponse, result);
-                mockedTrafficManager.verify(() -> ChatCommandsMessagesTrafficManager.commandKick(mockAdmin), times(1));
+                mockedTrafficManager.verify(
+                        () -> ChatCommandsMessagesTrafficManager.commandKick(mockAdmin, usersList), times(1));
             }
         }
     }
