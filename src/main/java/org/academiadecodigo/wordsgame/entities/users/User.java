@@ -207,4 +207,9 @@ public abstract class User implements Runnable {
     public void setReadRules(boolean readRules) {
         this.readRules = readRules;
     }
+
+    // Public method for testing protected getUserInput
+    public String testGetUserInput() {
+        return getUserInput();
+    }
 }

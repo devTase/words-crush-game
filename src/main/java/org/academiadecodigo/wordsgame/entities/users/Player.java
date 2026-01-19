@@ -99,4 +99,17 @@ public class Player extends User {
     public void setKicked(boolean kicked) {
         this.isKicked = kicked;
     }
+
+    // Public methods for testing protected methods
+    public boolean checkIsUserInWaitingRoom() {
+        return isUserInWaitingRoom();
+    }
+
+    public boolean checkIsUserInGameRoom() {
+        return isUserInGameRoom();
+    }
+
+    public boolean checkIsUserInFinishSage() {
+        return isUserInFinishSage();
+    }
 }
